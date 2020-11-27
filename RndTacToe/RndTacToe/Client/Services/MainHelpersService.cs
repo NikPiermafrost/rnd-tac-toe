@@ -9,23 +9,30 @@ namespace RndTacToe.Client.Services
     public class MainHelpersService : IMainHelpersService
     {
         private readonly Random _rnd;
+        public string StoredUserName { get; set; }
+        public int StoredRandomness { get; set; }
         public MainHelpersService()
         {
             _rnd = new Random();
         }
 
-        public int GetRandomnessValue(string userName)
+        public void SetRandomnessValue(string userName)
         {
             var initialValue = _rnd.Next(0, 100);
             if (initialValue % 2 == 0)
             {
                 var today = DateTime.Today.DayOfWeek;
-                return initialValue / (int)today + userName.Length;
+                StoredRandomness = initialValue / (int)today + userName.Length;
             }
             else
             {
-                return initialValue - userName.Length;
+                StoredRandomness = initialValue - userName.Length;
             }
+        }
+
+        public void SetCurrentUserName(string userName)
+        {
+            StoredUserName = userName;
         }
     }
 }

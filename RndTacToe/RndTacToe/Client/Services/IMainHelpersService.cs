@@ -2,6 +2,7 @@
 {
     public interface IMainHelpersService
     {
-        int GetRandomnessValue(string userName);
+        void SetRandomnessValue(string userName);
+        void SetCurrentUserName(string userName);
     }
 }
