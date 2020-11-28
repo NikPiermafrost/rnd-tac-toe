@@ -150,6 +150,11 @@
                     isYourTurn = true;
                 }
                 hasSomeoneWon = MainHelpersService.HasSomeOneWon(GameGrid);
+                var draw = checkIfDraw();
+                if(draw) 
+                {
+                    hasSomeoneWon = true;
+                }
                 StateHasChanged();
             });
     }
@@ -236,5 +241,10 @@
     {
         await hubConnection.SendAsync("RemoveFromGroup", GameId, currentPlayerName);
         await hubConnection.DisposeAsync();
+    }
+
+    private bool checkIfDraw() 
+    {
+        return !GameGrid.Any(x => string.IsNullOrEmpty(x.StoredChar));
     }
 }
