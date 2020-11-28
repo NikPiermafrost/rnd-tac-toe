@@ -2,28 +2,52 @@
 @using Services;
 @inject IMainHelpersService MainHelperService;
 @using RndTacToe.Shared;
+@inject NavigationManager NavigationManager;
 
 <div class="container main-index-container">
-    <EditForm Model="@userNameForm" OnValidSubmit="@OnSubmit">
+    <EditForm Model="@gameForm" OnValidSubmit="@OnSubmit">
         <ValidationSummary></ValidationSummary>
         <div class="form-group">
             <label id="username" class="form-label-custom">Username</label>
-            <InputText class="form-control" id="username" @bind-Value="@userNameForm.Username" />
+            <InputText class="form-control" id="username" @bind-Value="@gameForm.Username" />
         </div>
-        <div class="d-flex justify-content-end">
+        <h4>New Game</h4>
+        <div class="d-flex justify-content-between">
+            @if (!string.IsNullOrEmpty(newGameGuid)) 
+            {
+                <span>Send this codel to a friend!  @newGameGuid</span>
+            }
             <button type="submit" class="btn btn-light" style="background-color: #f3f5ef">Create Game</button>
+        </div>
+        <h4>Join Game</h4>
+        <div class="d-flex justify-content-between">
+            <span>Insert the game code to start!</span>
+            <InputText class="form-control w-50" id="username"  @bind-Value="@gameForm.GameCode" />
+            <button type="button" class="btn btn-light" style="background-color: #f3f5ef">Join Game</button>
         </div>
     </EditForm>
 </div>
 
 @code {
-    private LoginForm userNameForm = new LoginForm();
+    private LoginForm gameForm = new LoginForm();
+    private string newGameGuid;
+
+    protected override void OnInitialized() 
+    {
+        newGameGuid = Guid.NewGuid().ToString();
+    }
 
     void OnSubmit() 
     {
-        var guidForSignalR = Guid.NewGuid().ToString();
-        Console.WriteLine(guidForSignalR);
-        MainHelperService.SetCurrentUserName(userNameForm.Username);
-        MainHelperService.SetRandomnessValue(userNameForm.Username);
+        MainHelperService.SetCurrentUserName(gameForm.Username);
+        MainHelperService.SetRandomnessValue(gameForm.Username);
+        NavigationManager.NavigateTo($"/{newGameGuid}");
+    }
+
+    void OnJoinGame() 
+    {
+        MainHelperService.SetCurrentUserName(gameForm.Username);
+        MainHelperService.SetRandomnessValue(gameForm.Username);
+        NavigationManager.NavigateTo($"/{gameForm.GameCode}");
     }
 }

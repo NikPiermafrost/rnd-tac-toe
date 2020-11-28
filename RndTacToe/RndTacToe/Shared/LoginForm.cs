@@ -13,5 +13,6 @@ namespace RndTacToe.Shared
         [MinLength(4, ErrorMessage = "Name too short")]
         [MaxLength(16, ErrorMessage = "Name too long")]
         public string Username { get; set; }
+        public string GameCode { get; set; }
     }
 }

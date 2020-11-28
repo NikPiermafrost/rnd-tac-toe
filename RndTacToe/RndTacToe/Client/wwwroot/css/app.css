@@ -3,19 +3,17 @@
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     background-color: #373b47;
+    color: #f6c962;
 }
 
 .main-title {
-    color: #f6c962;
     font-size: 5rem;
 }
 .main-subtitle {
-    color: #f6c962;
     font-size: 3rem;
 }
 
 .form-label-custom {
-    color: #f6c962;
     font-size: 2.5rem;
 }
 
