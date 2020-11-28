@@ -56,9 +56,13 @@
         MainHelperService.SetCurrentUserName(gameForm.Username);
         MainHelperService.SetRandomnessValue(gameForm.Username);
 
-        if(!string.IsNullOrEmpty(gameForm.GameCode)) {
+        if(!string.IsNullOrEmpty(gameForm.GameCode)) 
+        {
             NavigationManager.NavigateTo($"/{gameForm.GameCode}");
+        } 
+        else 
+        {
+            NavigationManager.NavigateTo($"/{newGameGuid}");
         }
-        NavigationManager.NavigateTo($"/{newGameGuid}");
     }
 }

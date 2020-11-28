@@ -4,15 +4,10 @@
 @using RndTacToe.Shared
 @inject IMainHelpersService MainHelpersService
 @inject NavigationManager NavigationManager
+@using Microsoft.AspNetCore.SignalR.Client
+@implements IAsyncDisposable
 
 <div class="container">
-    <div class="row">
-        <div class="col-lg-2">
-        </div>
-        <div class="col-lg-8"></div>
-        <div class="col-lg-2">
-        </div>
-    </div>
     <div class="d-flex justify-content-between">
         @if (!string.IsNullOrEmpty(currentPlayerName))
         {
@@ -29,14 +24,21 @@
         }
     </div>
     <div class="d-flex justify-content-center mt-3">
-        <div class="grid-container">
-            @foreach(var item in GameGrid)
-            {
-                <div class="grid-item" @onclick="@(() => makeTheMove(item.CellPosition))">
-                    @item.StoredChar
-                </div>
-            }
-        </div>
+        @if(IsConnected) 
+        {
+            <div class="grid-container">
+                @foreach(var item in GameGrid)
+                {
+                    <div class="grid-item" @onclick="@(() => makeTheMove(item.CellPosition))">
+                        @item.StoredChar
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <h4>Waiting for the opponent to connect...</h4>
+        }
     </div>
 </div>
 
@@ -44,24 +46,68 @@
     [Parameter]
     public string GameId { get; set; }
 
+    private HubConnection hubConnection;
     private string currentPlayerName;
     private int currentRandomness = 0;
     private string enemyPlayerName;
     private int enemyPlayerRandomness = 0;
     private string yourSimbol = "X";
+    bool isYourTurn = true;
 
     private TicTacToeCell[] GameGrid = new TicTacToeCell[9];
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
         currentPlayerName = MainHelpersService.GetCurrentPlayerName();
         currentRandomness = MainHelpersService.GetCurrentRandomness();
+        InitializeEmptyGrid();
+        await initializeConnection();
+
         if(string.IsNullOrEmpty(currentPlayerName)) 
         {
             NavigationManager.NavigateTo("/");
         }
-        InitializeEmptyGrid();
+        sendInfoForInitialCall();
     }
+
+    async Task initializeConnection() 
+    {
+        hubConnection = new HubConnectionBuilder()
+            .WithUrl(NavigationManager.ToAbsoluteUri("/game-hub"))
+            .Build();
+
+        hubConnection.On<string, int>("ReceiveOpponent", (username, randomChanhce) => 
+        {
+            Console.WriteLine($"Enemy player {username} received");
+            if(username != currentPlayerName && string.IsNullOrEmpty(enemyPlayerName))
+            {
+                this.enemyPlayerRandomness = randomChanhce;
+                this.enemyPlayerName = username;
+                sendInfoForCallback();
+                StateHasChanged();
+            }
+        });
+
+        await hubConnection.StartAsync();
+    }
+
+    void sendInfoForInitialCall() 
+    {
+        Console.WriteLine("Iniziata");
+        hubConnection.SendAsync("OnUserConnect", GameId, currentPlayerName, currentRandomness);
+    }
+
+    void sendInfoForCallback()
+    {
+        if(hubConnection.State == HubConnectionState.Connected) 
+        {
+            hubConnection.SendAsync("OnUserConnect", GameId, currentPlayerName, currentRandomness);
+            Console.WriteLine("Iniziato controllo");
+        }
+    }
+
+    public bool IsConnected =>
+        hubConnection.State == HubConnectionState.Connected;
 
     void InitializeEmptyGrid()
     {
@@ -114,5 +160,10 @@
             isItEmpty = string.IsNullOrEmpty(GameGrid[potentialResponse].StoredChar) && potentialResponse != requestedCell;
         }
         return potentialResponse;
+    }
+        
+    public async ValueTask DisposeAsync()
+    {
+        await hubConnection.DisposeAsync();
     }
 }
