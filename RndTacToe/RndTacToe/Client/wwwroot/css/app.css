@@ -13,3 +13,20 @@ html, body {
 .validation-message {
     color: #b99e9a;
 }
+
+.grid-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+.grid-container div {
+    margin: 0 5px 5px 0;
+}
+
+.grid-item {
+    border: 5px solid #b99e9a;
+    font-size: 3.9rem;
+    text-align: center;
+    height: 100px;
+    width: 100px;
+}

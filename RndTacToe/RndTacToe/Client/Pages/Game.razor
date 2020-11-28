@@ -1,7 +1,9 @@
 ﻿@page "/{GameId}"
 @using Services
 @using RndTacToe.Client.Components
-@inject IMainHelpersService MainHelpersService;
+@using RndTacToe.Shared
+@inject IMainHelpersService MainHelpersService
+@inject NavigationManager NavigationManager
 
 <div class="container">
     <div class="row">
@@ -26,6 +28,16 @@
             <h4>Waiting for player to connect...</h4>
         }
     </div>
+    <div class="d-flex justify-content-center mt-3">
+        <div class="grid-container">
+            @foreach(var item in GameGrid)
+            {
+                <div class="grid-item" @onclick="@(() => makeTheMove(item.CellPosition))">
+                    @item.StoredChar
+                </div>
+            }
+        </div>
+    </div>
 </div>
 
 @code {
@@ -36,22 +48,37 @@
     private int currentRandomness = 0;
     private string enemyPlayerName;
     private int enemyPlayerRandomness = 0;
+    private string yourSimbol = "X";
 
-    private string[][] GameGrid = new string[3][];
+    private TicTacToeCell[] GameGrid = new TicTacToeCell[9];
 
     protected override void OnInitialized()
     {
         currentPlayerName = MainHelpersService.GetCurrentPlayerName();
         currentRandomness = MainHelpersService.GetCurrentRandomness();
+        if(string.IsNullOrEmpty(currentPlayerName)) 
+        {
+            NavigationManager.NavigateTo("/");
+        }
         InitializeEmptyGrid();
     }
 
     void InitializeEmptyGrid()
     {
-        string[] emptyRow = new string[] { "", "", "" };
-        for (int i = 0; i < 3; i++)
+        for(int i = 0; i < 9; i++)
         {
-            GameGrid[i] = emptyRow;
+            GameGrid[i] = new TicTacToeCell
+            {
+                StoredChar = "",
+                CellPosition = i
+            };
         }
+        StateHasChanged();
+    }
+
+    void makeTheMove(int cellPosition) 
+    {
+        GameGrid.FirstOrDefault(x => x.CellPosition == cellPosition).StoredChar = yourSimbol;
+        StateHasChanged();
     }
 }
