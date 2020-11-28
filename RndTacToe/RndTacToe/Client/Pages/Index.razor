@@ -19,8 +19,9 @@
                 <span>Send this codel to a friend!  @newGameGuid</span>
             }
         </div>
-        <h4>Join Game</h4>
+        <h4 class="my-2">Or</h4>
         <div class="d-flex justify-content-between">
+        <h4>Join Game</h4>
             <span>Insert the game code to start!</span>
             <InputText class="form-control w-50" id="username"  @bind-Value="@gameForm.GameCode" />
         </div>
@@ -45,7 +46,7 @@
 
     private void HandleFieldChanged(object sender, FieldChangedEventArgs e)
     {
-        formInvalid = editContext.Validate();
+        formInvalid = !editContext.Validate();
         StateHasChanged();
     }
 
@@ -53,13 +54,10 @@
     {
         MainHelperService.SetCurrentUserName(gameForm.Username);
         MainHelperService.SetRandomnessValue(gameForm.Username);
-        NavigationManager.NavigateTo($"/{newGameGuid}");
-    }
 
-    void OnJoinGame() 
-    {
-        MainHelperService.SetCurrentUserName(gameForm.Username);
-        MainHelperService.SetRandomnessValue(gameForm.Username);
-        NavigationManager.NavigateTo($"/{gameForm.GameCode}");
+        if(!string.IsNullOrEmpty(gameForm.GameCode)) {
+            NavigationManager.NavigateTo($"/{gameForm.GameCode}");
+        }
+        NavigationManager.NavigateTo($"/{newGameGuid}");
     }
 }

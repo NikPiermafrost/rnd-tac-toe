@@ -1,8 +1,16 @@
 ﻿@page "/{GameId}"
+@using Services
+@inject IMainHelpersService MainHelpersService;
 
 <h3>@GameId</h3>
 
 @code {
     [Parameter]
     public string GameId { get; set; }
+
+    protected override void OnInitialized() 
+    {
+        Console.WriteLine(MainHelpersService.GetCurrentPlayerName());
+        Console.WriteLine(MainHelpersService.GetCurrentRandomness());
+    }
 }

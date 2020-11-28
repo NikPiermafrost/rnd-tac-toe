@@ -4,5 +4,7 @@
     {
         void SetRandomnessValue(string userName);
         void SetCurrentUserName(string userName);
+        string GetCurrentPlayerName();
+        int GetCurrentRandomness();
     }
 }

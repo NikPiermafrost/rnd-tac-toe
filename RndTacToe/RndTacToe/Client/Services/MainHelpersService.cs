@@ -34,5 +34,15 @@ namespace RndTacToe.Client.Services
         {
             StoredUserName = userName;
         }
+
+        public string GetCurrentPlayerName()
+        {
+            return StoredUserName;
+        }
+
+        public int GetCurrentRandomness()
+        {
+            return StoredRandomness;
+        }
     }
 }
