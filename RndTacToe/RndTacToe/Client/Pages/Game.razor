@@ -24,6 +24,16 @@
         }
     </div>
     <div class="d-flex justify-content-center mt-3">
+        @if(isYourTurn)
+        {
+            <h4>@currentPlayerName Turn!</h4>
+        }
+        else
+        {
+            <h4>@enemyPlayerName Turn!</h4>
+        }
+    </div>
+    <div class="d-flex justify-content-center mt-3">
         @if(IsConnected) 
         {
             <div class="grid-container">
@@ -40,6 +50,12 @@
             <h4>Waiting for the opponent to connect...</h4>
         }
     </div>
+    <div class="d-flex justify-content-center">
+        @if(hasSomeoneWon)
+        {
+            <button class="btn btn-light" style="background-color: #f3f5ef" @onclick="@(() => RestartMatch())">Rematch!</button>
+        }
+    </div>
 </div>
 
 @code {
@@ -52,6 +68,7 @@
     private string enemyPlayerName;
     private int enemyPlayerRandomness = 0;
     private string yourSimbol = "";
+    private bool hasSomeoneWon = false;
     bool isYourTurn = true;
 
     private TicTacToeCell[] GameGrid = new TicTacToeCell[9];
@@ -79,6 +96,32 @@
             .WithUrl(NavigationManager.ToAbsoluteUri("/game-hub"))
             .Build();
 
+        ConnectToOpponent();
+        ConnectToMoves();
+        ConnectToDispose();
+        ConnectToRematch();
+
+        await hubConnection.StartAsync();
+    }
+
+    void RestartMatch() 
+    {
+        hubConnection.SendAsync("Rematch", GameId);
+    }
+
+    void ConnectToRematch() 
+    {
+        hubConnection.On("RestartMatch", () => 
+            {
+                InitializeEmptyGrid();
+                var hasStarted = MainHelpersService.GetHasStartedStatus();
+                isYourTurn = !hasStarted;
+                MainHelpersService.SetHasStarted(!hasStarted);
+            });
+    }
+
+    void ConnectToOpponent() 
+    {
         hubConnection.On<string, int>("ReceiveOpponent", (username, randomChanhce) => 
             {
                 Console.WriteLine($"Enemy player {username} received");
@@ -90,25 +133,36 @@
                     StateHasChanged();
                 }
             });
+    }
 
+    void ConnectToMoves()
+    {
         hubConnection.On<int, string>("Move", (position, symbol) =>
             {
                 GameGrid[position].StoredChar = symbol;
-                Console.WriteLine($"mossa ricevuta: {symbol} in {position}");
+                if(symbol == yourSimbol) 
+                {
+                    isYourTurn = false;
+                }
+                else
+                {
+                    isYourTurn = true;
+                }
+                hasSomeoneWon = MainHelpersService.HasSomeOneWon(GameGrid);
                 StateHasChanged();
             });
+    }
 
+    void ConnectToDispose()
+    {
         hubConnection.On<string>("HasExited", (message) => 
             {
                 Console.WriteLine(message);
             });
-
-        await hubConnection.StartAsync();
     }
 
     void sendInfoForInitialCall() 
     {
-        Console.WriteLine("Iniziata");
         hubConnection.SendAsync("OnUserConnect", GameId, currentPlayerName, currentRandomness);
     }
 
@@ -117,7 +171,6 @@
         if(hubConnection.State == HubConnectionState.Connected) 
         {
             hubConnection.SendAsync("OnUserConnect", GameId, currentPlayerName, currentRandomness);
-            Console.WriteLine("Iniziato controllo");
         }
     }
 

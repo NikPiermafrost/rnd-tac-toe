@@ -1,4 +1,6 @@
-﻿namespace RndTacToe.Client.Services
+﻿using RndTacToe.Shared;
+
+namespace RndTacToe.Client.Services
 {
     public interface IMainHelpersService
     {
@@ -8,5 +10,6 @@
         int GetCurrentRandomness();
         void SetHasStarted(bool hasStarted);
         bool GetHasStartedStatus();
+        bool HasSomeOneWon(TicTacToeCell[] grid);
     }
 }

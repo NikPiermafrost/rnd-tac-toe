@@ -24,5 +24,10 @@ namespace RndTacToe.Server.Hubs
         {
             await Clients.Group(gameId).SendAsync("Move", position, symbol);
         }
+
+        public async Task Rematch(string gameId)
+        {
+            await Clients.Group(gameId).SendAsync("RestartMatch");
+        }
     }
 }
