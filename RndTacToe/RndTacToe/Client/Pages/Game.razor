@@ -36,7 +36,7 @@
     <div class="d-flex justify-content-center mt-3">
         @if(IsConnected) 
         {
-            <div class="grid-container">
+            <div class="grid-container" style="@(isYourTurn || hasSomeoneWon ? "" : unclickableStyle)">
                 @foreach(var item in GameGrid)
                 {
                     <div class="grid-item" @onclick="@(() => MakeTheMove(item.CellPosition))">
@@ -69,6 +69,7 @@
     private int enemyPlayerRandomness = 0;
     private string yourSimbol = "";
     private bool hasSomeoneWon = false;
+    private string unclickableStyle = "pointer-events: none";
     bool isYourTurn = true;
 
     private TicTacToeCell[] GameGrid = new TicTacToeCell[9];

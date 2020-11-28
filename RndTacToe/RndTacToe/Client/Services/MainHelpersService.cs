@@ -77,7 +77,11 @@ namespace RndTacToe.Client.Services
         {
             foreach (var condition in _conditions)
             {
-                var res = grid[condition[0]].StoredChar == grid[condition[1]].StoredChar && grid[condition[1]].StoredChar == grid[condition[2]].StoredChar;
+                var res = grid[condition[0]].StoredChar == grid[condition[1]].StoredChar
+                          && grid[condition[1]].StoredChar == grid[condition[2]].StoredChar
+                          && grid[condition[0]].StoredChar != ""
+                          && grid[condition[1]].StoredChar != ""
+                          && grid[condition[2]].StoredChar != "";
                 if (res)
                 {
                     return true;
