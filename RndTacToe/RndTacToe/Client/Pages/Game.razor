@@ -78,7 +78,41 @@
 
     void makeTheMove(int cellPosition) 
     {
-        GameGrid.FirstOrDefault(x => x.CellPosition == cellPosition).StoredChar = yourSimbol;
+        var actualMove = WillItBeTheRightMove(cellPosition);
+        var requestedCell = GameGrid.FirstOrDefault(x => x.CellPosition == actualMove);
+        if (string.IsNullOrEmpty(requestedCell.StoredChar))
+        {
+            requestedCell.StoredChar = yourSimbol;
+        }
         StateHasChanged();
+    }
+
+    private int WillItBeTheRightMove(int requestedCell)
+    {
+        if(currentRandomness == 0) 
+        {
+            return requestedCell;
+        }
+        var rnd = new Random();
+        var willItBe = rnd.Next(1, 101);
+        if(willItBe >= currentRandomness) 
+        {
+            return requestedCell;
+        }
+        return ItIsNotTheRightMove(requestedCell);
+    }
+
+    private int ItIsNotTheRightMove(int requestedCell) 
+    {
+        Console.WriteLine("Mossa sbagliata!");
+        var rnd = new Random();
+        bool isItEmpty = false;
+        int potentialResponse = 0;
+        while(!isItEmpty) 
+        {
+            potentialResponse = rnd.Next(9);
+            isItEmpty = string.IsNullOrEmpty(GameGrid[potentialResponse].StoredChar) && potentialResponse != requestedCell;
+        }
+        return potentialResponse;
     }
 }
