@@ -6,6 +6,7 @@
 
 <div class="container main-index-container">
     <EditForm OnValidSubmit="@OnSubmit" EditContext="@editContext">
+        <DataAnnotationsValidator />
         <div class="form-group">
             <label id="username" class="form-label-custom">Username</label>
             <InputText class="form-control" id="username" @bind-Value="@gameForm.Username" />
@@ -17,13 +18,14 @@
             {
                 <span>Send this codel to a friend!  @newGameGuid</span>
             }
-            <button disabled="@(!formValid)" type="submit" class="btn btn-light" style="background-color: #f3f5ef">Create Game</button>
         </div>
         <h4>Join Game</h4>
         <div class="d-flex justify-content-between">
             <span>Insert the game code to start!</span>
             <InputText class="form-control w-50" id="username"  @bind-Value="@gameForm.GameCode" />
-            <button disabled="@(!formValid)" type="button" class="btn btn-light" style="background-color: #f3f5ef">Join Game</button>
+        </div>
+        <div class="d-flex justify-content-end">
+            <button disabled="@formInvalid" type="submit" class="btn btn-light" style="background-color: #f3f5ef">Join Game</button>
         </div>
     </EditForm>
 </div>
@@ -31,7 +33,7 @@
 @code {
     private LoginForm gameForm = new LoginForm();
     private string newGameGuid;
-    private bool formValid = false;
+    private bool formInvalid = false;
     private EditContext editContext;
 
     protected override void OnInitialized() 
@@ -43,7 +45,7 @@
 
     private void HandleFieldChanged(object sender, FieldChangedEventArgs e)
     {
-        formValid = editContext.Validate();
+        formInvalid = editContext.Validate();
         StateHasChanged();
     }
 
