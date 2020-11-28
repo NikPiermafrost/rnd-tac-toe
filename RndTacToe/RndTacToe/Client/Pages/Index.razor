@@ -41,7 +41,7 @@
 
     protected override void OnInitialized() 
     {
-        newGameGuid = Guid.NewGuid().ToString();
+        newGameGuid = Guid.NewGuid().ToString().ToLower().Trim('-').Substring(0, 8);
         editContext = new EditContext(gameForm);
         editContext.OnFieldChanged += HandleFieldChanged;
     }
