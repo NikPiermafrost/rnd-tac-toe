@@ -6,5 +6,7 @@
         void SetCurrentUserName(string userName);
         string GetCurrentPlayerName();
         int GetCurrentRandomness();
+        void SetHasStarted(bool hasStarted);
+        bool GetHasStartedStatus();
     }
 }

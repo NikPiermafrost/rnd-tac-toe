@@ -17,12 +17,12 @@ namespace RndTacToe.Server.Hubs
         public async Task RemoveFromGroup(string gameId, string username)
         {
             await Groups.RemoveFromGroupAsync(Context.ConnectionId, gameId);
-            await Clients.Group(gameId).SendAsync("Send", $"{username} has left the game");
+            await Clients.Group(gameId).SendAsync("HasExited", $"{username} has left the game");
         }
 
-        public async Task MoveSelected(string gameId, string userName, int position)
+        public async Task MoveSelected(string gameId, int position, string symbol)
         {
-            await Clients.Group(gameId).SendAsync("Move", userName, position);
+            await Clients.Group(gameId).SendAsync("Move", position, symbol);
         }
     }
 }

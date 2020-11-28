@@ -3,6 +3,7 @@
 @inject IMainHelpersService MainHelperService;
 @using RndTacToe.Shared;
 @inject NavigationManager NavigationManager;
+@inject IJSRuntime JSRuntime;
 
 <div class="container main-index-container">
     <EditForm OnValidSubmit="@OnSubmit" EditContext="@editContext">
@@ -55,13 +56,14 @@
     {
         MainHelperService.SetCurrentUserName(gameForm.Username);
         MainHelperService.SetRandomnessValue(gameForm.Username);
-
         if(!string.IsNullOrEmpty(gameForm.GameCode)) 
         {
+            MainHelperService.SetHasStarted(false);
             NavigationManager.NavigateTo($"/{gameForm.GameCode}");
         } 
         else 
         {
+            MainHelperService.SetHasStarted(true);
             NavigationManager.NavigateTo($"/{newGameGuid}");
         }
     }

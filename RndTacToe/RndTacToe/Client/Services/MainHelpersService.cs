@@ -11,6 +11,7 @@ namespace RndTacToe.Client.Services
         private readonly Random _rnd;
         public string StoredUserName { get; set; }
         public int StoredRandomness { get; set; }
+        public bool HasStarted { get; set; }
         public MainHelpersService()
         {
             _rnd = new Random();
@@ -28,6 +29,15 @@ namespace RndTacToe.Client.Services
             {
                 StoredRandomness = initialValue - userName.Length;
             }
+        }
+        public void SetHasStarted(bool hasStarted)
+        {
+            HasStarted = hasStarted;
+        }
+
+        public bool GetHasStartedStatus()
+        {
+            return HasStarted;
         }
 
         public void SetCurrentUserName(string userName)

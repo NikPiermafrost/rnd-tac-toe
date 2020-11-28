@@ -29,7 +29,7 @@
             <div class="grid-container">
                 @foreach(var item in GameGrid)
                 {
-                    <div class="grid-item" @onclick="@(() => makeTheMove(item.CellPosition))">
+                    <div class="grid-item" @onclick="@(() => MakeTheMove(item.CellPosition))">
                         @item.StoredChar
                     </div>
                 }
@@ -51,7 +51,7 @@
     private int currentRandomness = 0;
     private string enemyPlayerName;
     private int enemyPlayerRandomness = 0;
-    private string yourSimbol = "X";
+    private string yourSimbol = "";
     bool isYourTurn = true;
 
     private TicTacToeCell[] GameGrid = new TicTacToeCell[9];
@@ -60,6 +60,9 @@
     {
         currentPlayerName = MainHelpersService.GetCurrentPlayerName();
         currentRandomness = MainHelpersService.GetCurrentRandomness();
+        var hasStarted = MainHelpersService.GetHasStartedStatus();
+        yourSimbol = hasStarted ? "X" : "O";
+        isYourTurn = hasStarted;
         InitializeEmptyGrid();
         await initializeConnection();
 
@@ -77,16 +80,28 @@
             .Build();
 
         hubConnection.On<string, int>("ReceiveOpponent", (username, randomChanhce) => 
-        {
-            Console.WriteLine($"Enemy player {username} received");
-            if(username != currentPlayerName && string.IsNullOrEmpty(enemyPlayerName))
             {
-                this.enemyPlayerRandomness = randomChanhce;
-                this.enemyPlayerName = username;
-                sendInfoForCallback();
+                Console.WriteLine($"Enemy player {username} received");
+                if(username != currentPlayerName && string.IsNullOrEmpty(enemyPlayerName))
+                {
+                    this.enemyPlayerRandomness = randomChanhce;
+                    this.enemyPlayerName = username;
+                    sendInfoForCallback();
+                    StateHasChanged();
+                }
+            });
+
+        hubConnection.On<int, string>("Move", (position, symbol) =>
+            {
+                GameGrid[position].StoredChar = symbol;
+                Console.WriteLine($"mossa ricevuta: {symbol} in {position}");
                 StateHasChanged();
-            }
-        });
+            });
+
+        hubConnection.On<string>("HasExited", (message) => 
+            {
+                Console.WriteLine(message);
+            });
 
         await hubConnection.StartAsync();
     }
@@ -122,13 +137,14 @@
         StateHasChanged();
     }
 
-    void makeTheMove(int cellPosition) 
+    void MakeTheMove(int cellPosition) 
     {
         var actualMove = WillItBeTheRightMove(cellPosition);
         var requestedCell = GameGrid.FirstOrDefault(x => x.CellPosition == actualMove);
         if (string.IsNullOrEmpty(requestedCell.StoredChar))
         {
             requestedCell.StoredChar = yourSimbol;
+            hubConnection.SendAsync("MoveSelected", GameId, requestedCell.CellPosition, yourSimbol);
         }
         StateHasChanged();
     }
@@ -164,6 +180,7 @@
         
     public async ValueTask DisposeAsync()
     {
+        await hubConnection.SendAsync("RemoveFromGroup", GameId, currentPlayerName);
         await hubConnection.DisposeAsync();
     }
 }
