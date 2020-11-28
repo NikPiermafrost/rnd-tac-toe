@@ -8,7 +8,7 @@
     <EditForm OnValidSubmit="@OnSubmit" EditContext="@editContext">
         <DataAnnotationsValidator />
         <div class="form-group">
-            <label id="username" class="form-label-custom">Username</label>
+            <h4>Username</h4>
             <InputText class="form-control" id="username" @bind-Value="@gameForm.Username" />
             <ValidationMessage For="@(() => gameForm.Username)" />
         </div>
