@@ -5,11 +5,11 @@
 @inject NavigationManager NavigationManager;
 
 <div class="container main-index-container">
-    <EditForm Model="@gameForm" OnValidSubmit="@OnSubmit">
-        <ValidationSummary></ValidationSummary>
+    <EditForm OnValidSubmit="@OnSubmit" EditContext="@editContext">
         <div class="form-group">
             <label id="username" class="form-label-custom">Username</label>
             <InputText class="form-control" id="username" @bind-Value="@gameForm.Username" />
+            <ValidationMessage For="@(() => gameForm.Username)" />
         </div>
         <h4>New Game</h4>
         <div class="d-flex justify-content-between">
@@ -17,13 +17,13 @@
             {
                 <span>Send this codel to a friend!  @newGameGuid</span>
             }
-            <button type="submit" class="btn btn-light" style="background-color: #f3f5ef">Create Game</button>
+            <button disabled="@(!formValid)" type="submit" class="btn btn-light" style="background-color: #f3f5ef">Create Game</button>
         </div>
         <h4>Join Game</h4>
         <div class="d-flex justify-content-between">
             <span>Insert the game code to start!</span>
             <InputText class="form-control w-50" id="username"  @bind-Value="@gameForm.GameCode" />
-            <button type="button" class="btn btn-light" style="background-color: #f3f5ef">Join Game</button>
+            <button disabled="@(!formValid)" type="button" class="btn btn-light" style="background-color: #f3f5ef">Join Game</button>
         </div>
     </EditForm>
 </div>
@@ -31,10 +31,20 @@
 @code {
     private LoginForm gameForm = new LoginForm();
     private string newGameGuid;
+    private bool formValid = false;
+    private EditContext editContext;
 
     protected override void OnInitialized() 
     {
         newGameGuid = Guid.NewGuid().ToString();
+        editContext = new EditContext(gameForm);
+        editContext.OnFieldChanged += HandleFieldChanged;
+    }
+
+    private void HandleFieldChanged(object sender, FieldChangedEventArgs e)
+    {
+        formValid = editContext.Validate();
+        StateHasChanged();
     }
 
     void OnSubmit() 
