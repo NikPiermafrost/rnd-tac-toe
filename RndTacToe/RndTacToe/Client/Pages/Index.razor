@@ -6,31 +6,39 @@
 @inject IJSRuntime JSRuntime;
 
 <div class="container main-index-container">
-    <EditForm OnValidSubmit="@OnSubmit" EditContext="@editContext">
-        <DataAnnotationsValidator />
-        <div class="form-group">
-            <h4>Username</h4>
-            <InputText class="form-control" id="username" @bind-Value="@gameForm.Username" />
-            <ValidationMessage For="@(() => gameForm.Username)" />
+    <div class="row">
+        <div class="col-lg-2"></div>
+        <div class="col-lg-8">
+            <EditForm OnValidSubmit="@OnSubmit" EditContext="@editContext">
+                <DataAnnotationsValidator />
+                <div class="form-group">
+                    <h4>Username</h4>
+                    <InputText class="form-control" id="username" @bind-Value="@gameForm.Username" />
+                    <ValidationMessage For="@(() => gameForm.Username)" />
+                </div>
+                <h4>New Game</h4>
+                <div class="d-flex justify-content-between">
+                    @if (!string.IsNullOrEmpty(newGameGuid))
+                        {
+                    <span>Send this codel to a friend!  @newGameGuid</span>
+                    }
+                </div>
+                <h4 class="my-2">Or</h4>
+                <div class="d-flex justify-content-between">
+                    <h4>Join Game</h4>
+                    <span>Insert the game code to start!</span>
+                </div>
+                <div class="d-flex">
+                    <InputText class="form-control w-100" id="username" @bind-Value="@gameForm.GameCode" />
+                </div>
+                <hr />
+                <div class="d-flex justify-content-end">
+                    <button disabled="@formInvalid" type="submit" class="btn btn-light" style="background-color: #f3f5ef">Join Game</button>
+                </div>
+            </EditForm>
         </div>
-        <h4>New Game</h4>
-        <div class="d-flex justify-content-between">
-            @if (!string.IsNullOrEmpty(newGameGuid)) 
-            {
-                <span>Send this codel to a friend!  @newGameGuid</span>
-            }
-        </div>
-        <h4 class="my-2">Or</h4>
-        <div class="d-flex justify-content-between">
-        <h4>Join Game</h4>
-            <span>Insert the game code to start!</span>
-            <InputText class="form-control w-50" id="username"  @bind-Value="@gameForm.GameCode" />
-        </div>
-        <hr />
-        <div class="d-flex justify-content-end">
-            <button disabled="@formInvalid" type="submit" class="btn btn-light" style="background-color: #f3f5ef">Join Game</button>
-        </div>
-    </EditForm>
+        <div class="col-lg-2"></div>
+    </div>
 </div>
 
 @code {
@@ -39,7 +47,7 @@
     private bool formInvalid = false;
     private EditContext editContext;
 
-    protected override void OnInitialized() 
+    protected override void OnInitialized()
     {
         newGameGuid = Guid.NewGuid().ToString().ToLower().Trim('-').Substring(0, 8);
         editContext = new EditContext(gameForm);
@@ -52,16 +60,16 @@
         StateHasChanged();
     }
 
-    void OnSubmit() 
+    void OnSubmit()
     {
         MainHelperService.SetCurrentUserName(gameForm.Username);
         MainHelperService.SetRandomnessValue(gameForm.Username);
-        if(!string.IsNullOrEmpty(gameForm.GameCode)) 
+        if (!string.IsNullOrEmpty(gameForm.GameCode))
         {
             MainHelperService.SetHasStarted(false);
             NavigationManager.NavigateTo($"/{gameForm.GameCode}");
-        } 
-        else 
+        }
+        else
         {
             MainHelperService.SetHasStarted(true);
             NavigationManager.NavigateTo($"/{newGameGuid}");

@@ -41,7 +41,7 @@ namespace RndTacToe.Client.Services
             if (initialValue % 2 == 0)
             {
                 var today = DateTime.Today.DayOfWeek;
-                StoredRandomness = initialValue / (int)today + userName.Length;
+                StoredRandomness = initialValue / ((int)today + userName.Length);
             }
             else
             {
