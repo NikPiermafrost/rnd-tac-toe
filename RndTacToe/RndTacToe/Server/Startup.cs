@@ -54,8 +54,7 @@ namespace RndTacToe.Server
             {
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
             });
-
-            app.UseHttpsRedirection();
+            
             app.UseBlazorFrameworkFiles();
             app.UseStaticFiles();
 
