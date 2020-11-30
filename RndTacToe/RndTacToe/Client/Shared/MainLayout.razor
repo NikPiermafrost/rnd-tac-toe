@@ -5,8 +5,33 @@
         <h1 class="main-title">Rnd Tac Toe</h1>
     </div>
     <div class="d-flex justify-content-center">
-        <h3 class="main-subtitle">>implying the computer does what you asked</h3>
+        <h3 class="main-subtitle">@selectedMessage</h3>
     </div>
     <hr />
     @Body
 </div>
+
+@code {
+    private Random rnd = new Random();
+    private string selectedMessage = "";
+    private string[] messages = new string[] 
+    { 
+        "Bruh",
+        "Oopsie woopsie u did a f*cky wucky OwO",
+        "CANNOT >;))",
+        "OH WHAT A HORRIBLE NIGHT TO HAVE A CURSE.",
+        "GOD WHAT A F*CKING NIGHT, MY DUDE. FOR A CURSE I MEAN.",
+        "F*CK THIS.",
+        "OBJECTION!",
+        "PRANK'D",
+        "Cringe",
+        "SMH",
+        ">Implying the computer does what you asked"
+    };
+
+    protected override void OnInitialized()
+    {
+        var index = rnd.Next(messages.Count());
+        selectedMessage = messages[index];
+    }
+}
