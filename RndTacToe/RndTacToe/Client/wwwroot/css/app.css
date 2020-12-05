@@ -34,10 +34,12 @@ html, body {
 
 .anchor-custom {
     color: #f6c962 !important;
+    cursor: pointer;
+    text-decoration: underline !important;
 }
 
     .anchor-custom:hover {
         color: #f6c962 !important;
         cursor: pointer;
-        text-decoration: underline;
+        text-decoration: underline !important;
     }
