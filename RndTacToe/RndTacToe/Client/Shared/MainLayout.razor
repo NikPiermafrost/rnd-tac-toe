@@ -1,8 +1,9 @@
 ﻿@inherits LayoutComponentBase
+@inject NavigationManager NavigationManager
 
 <div class="container-fluid">
     <header>
-        <div class="d-flex justify-content-center">
+        <div class="d-flex justify-content-center" @onclick="@(() => NavigationManager.NavigateTo("/"))">
             <h1 class="main-title">Rnd Tac Toe</h1>
         </div>
         <div class="d-flex justify-content-center">
