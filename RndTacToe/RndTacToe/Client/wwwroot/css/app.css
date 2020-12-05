@@ -31,3 +31,13 @@ html, body {
     width: 100px;
     cursor: pointer;
 }
+
+.anchor-custom {
+    color: #f6c962 !important;
+}
+
+    .anchor-custom:hover {
+        color: #f6c962 !important;
+        cursor: pointer;
+        text-decoration: underline;
+    }
