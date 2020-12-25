@@ -61,6 +61,7 @@
     public string GameId { get; set; }
 
     private HubConnection hubConnection;
+    private Random rnd = new Random();
     private string currentPlayerName;
     private int currentRandomness = 0;
     private string enemyPlayerName;
@@ -212,13 +213,8 @@
 
     private int WillItBeTheRightMove(int requestedCell)
     {
-        if(currentRandomness == 0) 
-        {
-            return requestedCell;
-        }
-        var rnd = new Random();
         var willItBe = rnd.Next(1, 101);
-        if(willItBe >= currentRandomness) 
+        if(currentRandomness == 0 || willItBe >= currentRandomness) 
         {
             return requestedCell;
         }
@@ -227,8 +223,10 @@
 
     private int ItIsNotTheRightMove(int requestedCell) 
     {
-        Console.WriteLine("Mossa sbagliata!");
-        var rnd = new Random();
+        if (GameGrid.Where(x => string.IsNullOrEmpty(x.StoredChar)).Count() == 1) 
+        {
+            return requestedCell;
+        }
         bool isItEmpty = false;
         int potentialResponse = 0;
         while(!isItEmpty) 
