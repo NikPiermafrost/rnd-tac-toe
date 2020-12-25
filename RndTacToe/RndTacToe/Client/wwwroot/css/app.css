@@ -74,7 +74,7 @@ html, body {
     font-weight: bold;
 }
 
-.room-code {
+.room-code, .back-to-home, .rematch {
     border-radius: 5px;
     background-color: #f3f5ef;
     text-align: center;
