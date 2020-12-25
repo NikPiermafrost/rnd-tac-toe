@@ -10,9 +10,9 @@
         <div class="col-lg-2"></div>
         <div class="col-lg-8">
             <EditForm OnValidSubmit="@OnSubmit" EditContext="@editContext">
-                <div class="d-flex justify-content-between mb-3">
-                    <button type="button" class="btn btn-light" style="background-color: #f3f5ef" @onclick="@(() =>IsNewGame())">New Game</button>
-                    <button type="button" class="btn btn-light" style="background-color: #f3f5ef" @onclick="@(() =>IsJoin())">Join Game</button>
+                <div class="w-100 d-flex justify-content-start mb-3">
+                    <div class="@(isJoin ? "unselected new-game" : "selected new-game")" @onclick="@(() =>IsNewGame())">New Game</div>
+                    <div class="@(isJoin ? "selected join-game" : "unselected join-game")" @onclick="@(() =>IsJoin())">Join Game</div>
                 </div>
                 <DataAnnotationsValidator />
                 <div class="form-group">
@@ -23,11 +23,10 @@
                 @if(!isJoin)
                 {
                     <h4>New Game</h4>
-                    <div class="d-flex justify-content-between">
+                    <div class="w-100">
                         @if (!string.IsNullOrEmpty(newGameGuid))
                         {
-                            <span class="mr-3" style="font-size: 1.5rem">Room Code: @newGameGuid</span>
-                            <button type="button" class="btn btn-light btn-sm" style="background-color: #f3f5ef" @onclick="@(() => CopyToClipBoard())">Copy</button>
+                            <div class="room-code" @onclick="@(() => CopyToClipBoard())">Copy room code</div>
                         }
                     </div>
                 }
@@ -41,7 +40,7 @@
                 }
                 <hr />
                 <div class="d-flex justify-content-end">
-                    <button disabled="@formInvalid" type="submit" class="btn btn-light" style="background-color: #f3f5ef">
+                    <button disabled="@formInvalid" type="submit" class="btn btn-sm btn-light" style="background-color: #f3f5ef; font-weight: bold">
                         @if(isJoin)
                         {
                             <span>Join Game</span>

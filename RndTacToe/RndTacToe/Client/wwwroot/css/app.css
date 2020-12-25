@@ -19,9 +19,9 @@ html, body {
     grid-template-columns: 1fr 1fr 1fr;
 }
 
-.grid-container div {
-    margin: 0 5px 5px 0;
-}
+    .grid-container div {
+        margin: 0 5px 5px 0;
+    }
 
 .grid-item {
     border: 5px solid #b99e9a;
@@ -43,3 +43,44 @@ html, body {
         cursor: pointer;
         text-decoration: underline !important;
     }
+
+.unselected {
+    background-color: #f3f5ef;
+    color: #373b47;
+    width: 50%;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.selected {
+    background-color: #f6c962;
+    color: #373b47;
+    width: 50%;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.new-game {
+    border-bottom-left-radius: 5px;
+    border-top-left-radius: 5px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.join-game {
+    border-bottom-right-radius: 5px;
+    border-top-right-radius: 5px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.room-code {
+    border-radius: 5px;
+    background-color: #f3f5ef;
+    text-align: center;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 5px;
+    width: 100%;
+    color: #373b47;
+}
