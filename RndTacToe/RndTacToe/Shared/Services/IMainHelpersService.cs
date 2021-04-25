@@ -1,6 +1,6 @@
 ﻿using RndTacToe.Shared;
 
-namespace RndTacToe.Client.Services
+namespace RndTacToe.Shared.Services
 {
     public interface IMainHelpersService
     {

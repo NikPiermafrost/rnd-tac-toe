@@ -8,6 +8,7 @@ using Microsoft.Extensions.Hosting;
 using System.Linq;
 using RndTacToe.Server.Hubs;
 using Microsoft.AspNetCore.HttpOverrides;
+using RndTacToe.Shared.Services;
 
 namespace RndTacToe.Server
 {
@@ -24,6 +25,7 @@ namespace RndTacToe.Server
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddScoped<IMainHelpersService, MainHelpersService>();
             services.AddSignalR();
             services.AddControllersWithViews();
             services.AddResponseCompression(opts =>
@@ -65,7 +67,8 @@ namespace RndTacToe.Server
                 endpoints.MapRazorPages();
                 endpoints.MapControllers();
                 endpoints.MapHub<GridHub>("/game-hub");
-                endpoints.MapFallbackToFile("index.html");
+                //endpoints.MapFallbackToFile("index.html");
+                endpoints.MapFallbackToPage("/_Host");
             });
         }
     }

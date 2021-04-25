@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace RndTacToe.Client.Services
+namespace RndTacToe.Shared.Services
 {
     public class MainHelpersService : IMainHelpersService
     {
