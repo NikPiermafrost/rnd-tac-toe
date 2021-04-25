@@ -6,50 +6,44 @@
 @inject IJSRuntime JSRuntime;
 
 <div class="container main-index-container" style="max-width: 500px">
-    <div class="row">
-        <div class="col-lg-2"></div>
-        <div class="col-lg-8">
-            <EditForm OnValidSubmit="@OnSubmit" EditContext="@editContext">
-                <div class="w-100 d-flex justify-content-start mb-3">
-                    <div class="@(isJoin ? "unselected new-game" : "selected new-game")" @onclick="@(() =>IsNewGame())">New Game</div>
-                    <div class="@(isJoin ? "selected join-game" : "unselected join-game")" @onclick="@(() =>IsJoin())">Join Game</div>
-                </div>
-                <DataAnnotationsValidator />
-                <div class="form-group">
-                    <h4>Username</h4>
-                    <InputText class="form-control" id="username" @bind-Value="@gameForm.Username" />
-                    <ValidationMessage For="@(() => gameForm.Username)" />
-                </div>
-                @if (!isJoin)
-                {
-<h4>New Game</h4>
-                    <div class="w-100">
-                        @if (!string.IsNullOrEmpty(newGameGuid))
-                        {
-    <div class="room-code" @onclick="@(() => CopyToClipBoard())">Copy room code</div>}
-                    </div> }
-                                    else
-                                    {
-
-                    <h4>Insert the game code to join!</h4>
-                                        <div class="form-group">
-                                            <InputText class="form-control w-100" id="username" @bind-Value="@gameForm.GameCode" />
-                                        </div>                }
-                <hr />
-                <div class="d-flex justify-content-end">
-                    <button disabled="@formInvalid" type="submit" class="btn btn-sm btn-light" style="background-color: #f3f5ef; font-weight: bold">
-                        @if (isJoin)
-                        {
-        <span>Join Game</span> }
-                        else
-                        {
-        <span>Start Game</span>}
-                    </button>
-                </div>
-            </EditForm>
+    <EditForm OnValidSubmit="@OnSubmit" EditContext="@editContext">
+        <div class="w-100 d-flex justify-content-start mb-3">
+            <div class="@(isJoin ? "unselected new-game" : "selected new-game")" @onclick="@(() =>IsNewGame())">New Game</div>
+            <div class="@(isJoin ? "selected join-game" : "unselected join-game")" @onclick="@(() =>IsJoin())">Join Game</div>
         </div>
-        <div class="col-lg-2"></div>
-    </div>
+        <DataAnnotationsValidator />
+        <div class="form-group">
+            <h4>Username</h4>
+            <InputText class="form-control" id="username" @bind-Value="@gameForm.Username" />
+            <ValidationMessage For="@(() => gameForm.Username)" />
+        </div>
+        @if (!isJoin)
+        {
+    <h4>New Game</h4>
+                        <div class="w-100">
+                            @if (!string.IsNullOrEmpty(newGameGuid))
+                            {
+        <div class="room-code" @onclick="@(() => CopyToClipBoard())">Copy room code</div>}
+                        </div> }
+                    else
+                    {
+
+    <h4>Insert the game code to join!</h4>
+                        <div class="form-group">
+                            <InputText class="form-control w-100" id="username" @bind-Value="@gameForm.GameCode" />
+                        </div>}
+        <hr />
+        <div class="d-flex justify-content-end">
+            <button disabled="@formInvalid" type="submit" class="btn btn-sm btn-light" style="background-color: #f3f5ef; font-weight: bold">
+                @if (isJoin)
+                {
+    <span>Join Game</span> }
+else
+{
+    <span>Start Game</span>}
+            </button>
+        </div>
+    </EditForm>
 </div>
 
 @code { private LoginForm gameForm = new LoginForm();
