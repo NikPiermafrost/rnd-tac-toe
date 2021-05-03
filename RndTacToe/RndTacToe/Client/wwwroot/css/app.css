@@ -1,6 +1,4 @@
-﻿@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
-
-html, body {
+﻿html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     background-color: #373b47;
     color: #f6c962;
@@ -37,6 +35,8 @@ html, body {
     color: #f6c962 !important;
     cursor: pointer;
     text-decoration: underline !important;
+    margin-bottom: 1.5%;
+    font-size: 1.5rem;
 }
 
     .anchor-custom:hover {

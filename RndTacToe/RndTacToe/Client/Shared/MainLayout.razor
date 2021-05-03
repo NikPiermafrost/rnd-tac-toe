@@ -3,11 +3,11 @@
 
 <div class="container-fluid">
     <header>
-        <div class="d-flex justify-content-center" @onclick="@(() => NavigationManager.NavigateTo("/"))">
+        <div class="d-flex justify-content-center pt-2" @onclick="@(() => NavigationManager.NavigateTo("/"))">
             <h1 class="main-title">Rnd Tac Toe</h1>
         </div>
         <div class="d-flex justify-content-center">
-            <h3 class="main-subtitle">@selectedMessage</h3>
+            <h2 class="main-subtitle">@selectedMessage</h2>
         </div>
     </header>
     <hr />
@@ -26,14 +26,12 @@
         "Bruh",
         "Oopsie woopsie u did a f*cky wucky OwO",
         "CANNOT >;))",
-        "OH WHAT A HORRIBLE NIGHT TO HAVE A CURSE.",
-        "GOD WHAT A F*CKING NIGHT, MY DUDE. FOR A CURSE I MEAN.",
         "F*CK THIS.",
         "OBJECTION!",
         "PRANK'D",
         "Cringe",
         "SMH",
-        ">Implying the computer does what you asked"
+        ">Implying it does what you asked"
     };
 
     protected override void OnInitialized()

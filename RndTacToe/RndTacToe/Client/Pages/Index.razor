@@ -13,85 +13,91 @@
         </div>
         <DataAnnotationsValidator />
         <div class="form-group">
-            <h4>Username</h4>
+            <label for="username" style="font-size: 1.5rem">Username</label>
             <InputText class="form-control" id="username" @bind-Value="@gameForm.Username" />
             <ValidationMessage For="@(() => gameForm.Username)" />
         </div>
         @if (!isJoin)
         {
-    <h4>New Game</h4>
-                        <div class="w-100">
-                            @if (!string.IsNullOrEmpty(newGameGuid))
-                            {
-        <div class="room-code" @onclick="@(() => CopyToClipBoard())">Copy room code</div>}
-                        </div> }
-                    else
-                    {
-
-    <h4>Insert the game code to join!</h4>
-                        <div class="form-group">
-                            <InputText class="form-control w-100" id="username" @bind-Value="@gameForm.GameCode" />
-                        </div>}
+        <span style="font-size: 1.5rem">New Game</span>
+        <div class="w-100">
+            @if (!string.IsNullOrEmpty(newGameGuid))
+            {
+                <div class="room-code" @onclick="@(() => CopyToClipBoard())">Copy room code</div>
+            }
+        </div>
+        }
+        else
+        {
+        <label for="username"  style="font-size: 1.5rem">Insert the game code to join!</label>
+            <div class="form-group">
+                <InputText class="form-control w-100" id="username" @bind-Value="@gameForm.GameCode" />
+            </div>
+        }
         <hr />
         <div class="d-flex justify-content-end">
             <button disabled="@formInvalid" type="submit" class="btn btn-sm btn-light" style="background-color: #f3f5ef; font-weight: bold">
                 @if (isJoin)
                 {
-    <span>Join Game</span> }
-else
-{
-    <span>Start Game</span>}
+                    <span>Join Game</span>
+                }
+                else
+                {
+                    <span>Start Game</span>
+                }
             </button>
         </div>
     </EditForm>
 </div>
 
-@code { private LoginForm gameForm = new LoginForm();
-            private string newGameGuid;
-            private bool formInvalid = false;
-            private bool isJoin = false;
-            private EditContext editContext;
+@code {
+    private LoginForm gameForm = new LoginForm();
+    private string newGameGuid;
+    private bool formInvalid = false;
+    private bool isJoin = false;
+    private EditContext editContext;
 
-            protected override void OnInitialized()
-            {
-                newGameGuid = Guid.NewGuid().ToString().ToLower().Trim('-').Substring(0, 8);
-                editContext = new EditContext(gameForm);
-                editContext.OnFieldChanged += HandleFieldChanged;
-            }
+    protected override void OnInitialized()
+    {
+        newGameGuid = Guid.NewGuid().ToString().ToLower().Trim('-').Substring(0, 8);
+        editContext = new EditContext(gameForm);
+        editContext.OnFieldChanged += HandleFieldChanged;
+    }
 
-            private void HandleFieldChanged(object sender, FieldChangedEventArgs e)
-            {
-                formInvalid = !editContext.Validate();
-                StateHasChanged();
-            }
+    private void HandleFieldChanged(object sender, FieldChangedEventArgs e)
+    {
+        formInvalid = !editContext.Validate();
+        StateHasChanged();
+    }
 
-            void IsNewGame()
-            {
-                isJoin = false;
-            }
+    void IsNewGame()
+    {
+        isJoin = false;
+    }
 
-            void IsJoin()
-            {
-                isJoin = true;
-            }
+    void IsJoin()
+    {
+        isJoin = true;
+    }
 
-            void CopyToClipBoard()
-            {
-                JSRuntime.InvokeVoidAsync("copyToClipBoard", newGameGuid);
-            }
+    void CopyToClipBoard()
+    {
+        JSRuntime.InvokeVoidAsync("copyToClipBoard", newGameGuid);
+    }
 
-            void OnSubmit()
-            {
-                MainHelperService.SetCurrentUserName(gameForm.Username);
-                MainHelperService.SetRandomnessValue(gameForm.Username);
-                if (!string.IsNullOrEmpty(gameForm.GameCode))
-                {
-                    MainHelperService.SetHasStarted(false);
-                    NavigationManager.NavigateTo($"/{gameForm.GameCode}");
-                }
-                else
-                {
-                    MainHelperService.SetHasStarted(true);
-                    NavigationManager.NavigateTo($"/{newGameGuid}");
-                }
-            } }
+    void OnSubmit()
+    {
+        MainHelperService.SetCurrentUserName(gameForm.Username);
+        MainHelperService.SetRandomnessValue(gameForm.Username);
+        if (!string.IsNullOrEmpty(gameForm.GameCode))
+        {
+            MainHelperService.SetHasStarted(false);
+            NavigationManager.NavigateTo($"/{gameForm.GameCode}");
+        }
+        else
+        {
+            MainHelperService.SetHasStarted(true);
+            NavigationManager.NavigateTo($"/{newGameGuid}");
+        }
+    } 
+}
