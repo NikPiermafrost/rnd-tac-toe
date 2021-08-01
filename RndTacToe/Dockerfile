@@ -7,11 +7,11 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0-alpine AS build
 WORKDIR /src
-COPY ["RndTacToe/RndTacToe.Web.csproj", "RndTacToe/"]
-COPY ["RndTacToe/RndTacToe.Services.csproj", "RndTacToe/"]
-RUN dotnet restore "RndTacToe/RndTacToe.Web.csproj"
+COPY ["RndTacToe.Web/RndTacToe.Web.csproj", "RndTacToe.Web/"]
+COPY ["RndTacToe.Services/RndTacToe.Services.csproj", "RndTacToe.Services/"]
+RUN dotnet restore "RndTacToe.Web/RndTacToe.Web.csproj"
 COPY . .
-WORKDIR "/src/RndTacToe"
+WORKDIR "/src/RndTacToe.Web"
 RUN dotnet build "RndTacToe.Web.csproj" -c Release -o /app/build
 
 FROM build AS publish
