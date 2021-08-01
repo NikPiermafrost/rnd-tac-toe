@@ -7,18 +7,17 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0-alpine AS build
 WORKDIR /src
-COPY ["RndTacToe/Server/RndTacToe.Server.csproj", "RndTacToe/Server/"]
-COPY ["RndTacToe/Shared/RndTacToe.Shared.csproj", "RndTacToe/Shared/"]
-COPY ["RndTacToe/Client/RndTacToe.Client.csproj", "RndTacToe/Client/"]
-RUN dotnet restore "RndTacToe/Server/RndTacToe.Server.csproj"
+COPY ["RndTacToe/RndTacToe.Web.csproj", "RndTacToe/"]
+COPY ["RndTacToe/RndTacToe.Services.csproj", "RndTacToe/"]
+RUN dotnet restore "RndTacToe/RndTacToe.Web.csproj"
 COPY . .
-WORKDIR "/src/RndTacToe/Server"
-RUN dotnet build "RndTacToe.Server.csproj" -c Release -o /app/build
+WORKDIR "/src/RndTacToe"
+RUN dotnet build "RndTacToe.Web.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "RndTacToe.Server.csproj" -c Release -o /app/publish
+RUN dotnet publish "RndTacToe.Web.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "RndTacToe.Server.dll"]
+ENTRYPOINT ["dotnet", "RndTacToe.Web.dll"]
