@@ -7,7 +7,16 @@
             <h1 class="main-title">Rnd Tac Toe</h1>
         </div>
         <div class="d-flex justify-content-center text-center">
-            <h2 class="main-subtitle">@selectedMessage</h2>
+            <h2 class="main-subtitle">
+                @if (string.IsNullOrEmpty(selectedMessage))
+                {
+                    <span>&nbsp;</span>
+                }
+                else
+                {
+                    <span class="main-subtitle-text">@selectedMessage</span>
+                }
+            </h2>
         </div>
     </header>
     <hr />
@@ -19,6 +28,9 @@
 </div>
 
 @code {
+    private readonly Random _rnd = new Random();
+    private string selectedMessage { get;  set; }
+
     private string[] messages = new string[]
     {
         "Bruh",
@@ -27,7 +39,17 @@
         "F*CK THIS.",
         "OBJECTION!",
         "PRANK'D",
-        ">Implying it does what you asked"
+        ">Implying it does what you asked",
+        "Oh no",
     };
-    private string selectedMessage => messages[(int)new DateTime().DayOfWeek];
+
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            selectedMessage = messages[_rnd.Next(messages.Length)];
+            base.StateHasChanged();
+        }
+    }
 }
