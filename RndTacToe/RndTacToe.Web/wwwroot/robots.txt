@@ -1,5 +1,0 @@
-﻿User-agent: *
-Crawl-delay: 3000
-allow: /
-allow: /About
-Sitemap: https://rndtactoe.app
