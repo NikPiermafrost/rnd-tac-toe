@@ -1,10 +1,12 @@
 import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import useStore from '../core/store/store';
 
 const Game: React.FC = () => {
 
   const { gameId } = useParams();
   const navigate = useNavigate();
+  const { currentPlayer } = useStore();
 
   useEffect(() => {
     if (!gameId) {
@@ -13,9 +15,14 @@ const Game: React.FC = () => {
   }, []);
 
   return (
-    <span>
-      game number { gameId || 'Not found' }
-    </span>
+    <>
+      <p>
+        game number {gameId || 'Not found'}
+      </p>
+      <p>
+        player info: { currentPlayer?.username } { currentPlayer?.randomChance }
+      </p>
+    </>
   );
 };
 
