@@ -4,7 +4,12 @@ import { GameComponent } from './game/game.component';
 
 const routes: Routes = [
   {
-    path: '/:gameId',
+    path: '',
+    redirectTo: '/',
+    pathMatch: 'full'
+  },
+  {
+    path: ':gameId',
     component: GameComponent
   }
 ];

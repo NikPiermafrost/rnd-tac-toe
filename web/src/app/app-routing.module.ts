@@ -3,16 +3,16 @@ import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   {
-    path: '/',
+    path: '',
     loadChildren: () => import('./pages/index/index.module').then(m => m.IndexModule)
   },
   {
-    path: '/game',
+    path: 'game',
     loadChildren: () => import('./pages/game/game.module').then(m => m.GameModule)
   },
   {
     path: '**',
-    redirectTo: '/'
+    redirectTo: ''
   }
 ];
 
