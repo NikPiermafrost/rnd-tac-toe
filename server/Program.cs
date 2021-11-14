@@ -8,6 +8,4 @@ var app = builder.Build();
 
 app.MapHub<GridHub>("/game-hub");
 
-app.MapGet("/", () => "Hello World!");
-
 app.Run();
