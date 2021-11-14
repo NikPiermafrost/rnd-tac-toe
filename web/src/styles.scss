@@ -48,37 +48,7 @@ html, body {
   text-decoration: underline !important;
 }
 
-.unselected {
-  background-color: #f3f5ef;
-  color: #373b47;
-  width: 50%;
-  cursor: pointer;
-  padding: 5px;
-}
-
-.selected {
-  background-color: #f6c962;
-  color: #373b47;
-  width: 50%;
-  cursor: pointer;
-  padding: 5px;
-}
-
-.new-game {
-  border-bottom-left-radius: 5px;
-  border-top-left-radius: 5px;
-  text-align: center;
-  font-weight: bold;
-}
-
-.join-game {
-  border-bottom-right-radius: 5px;
-  border-top-right-radius: 5px;
-  text-align: center;
-  font-weight: bold;
-}
-
-.room-code, .back-to-home, .rematch {
+.back-to-home, .rematch {
   border-radius: 5px;
   background-color: #f3f5ef;
   text-align: center;
@@ -87,4 +57,9 @@ html, body {
   padding: 5px;
   width: 100%;
   color: #373b47;
+}
+
+.btn-submit {
+  font-weight: bold;
+  background-color: #f3f5ef;
 }
