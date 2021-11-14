@@ -1,19 +1,10 @@
 import express from 'express';
-import http from 'http';
-import ws from 'ws';
 import cors from 'cors';
+import initializeSignalrHub from './hubs/game-hub';
 
 const app = express();
-const server = http.createServer(app);
 
-const gameHub = new ws.WebSocket.Server({ 
-  server,
-  path: '/game'
-});
-
-gameHub.on('connection', (ws) => {
-  console.log('client info', ws);
-});
+initializeSignalrHub();
 
 app.put('/game/:gameId', (req, res) => {
   const { gameId } = req.params;
@@ -30,4 +21,4 @@ app.use(cors({
 }));
 
 
-export default server;
+export default app;
