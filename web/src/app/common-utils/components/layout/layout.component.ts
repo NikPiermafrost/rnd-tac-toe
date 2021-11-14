@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-layout',
@@ -20,7 +21,7 @@ export class LayoutComponent implements OnInit {
     'Oh no',
   ]
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit(): void {
     this.motd = this.messages[this.getMotd()];
@@ -28,6 +29,10 @@ export class LayoutComponent implements OnInit {
 
   getMotd(): number {
     return Math.floor(Math.random() * this.messages.length);
+  }
+
+  goToHome(): void {
+    this.router.navigate(['/']);
   }
 
 }

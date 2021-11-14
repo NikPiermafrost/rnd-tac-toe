@@ -1,1 +1,20 @@
-<p>game works!</p>
+<div class="container" style="max-width: 500px;">
+  <div class="w-100">
+    <div class="back-to-home" (click)="backToHome()">
+      Back to Home
+    </div>
+  </div>
+  <div class="d-flex justify-content-center mt-3">
+    <h4>{{ opponentName.length ? ('You\'re against ' + opponentName) : 'Waiting for opponent to connect...' }}</h4>
+  </div>
+  <div class="d-flex justify-content-center mt-3">
+    <h4>{{ isYourTurn ? playerName : opponentName }} Turn!</h4>
+  </div>
+  <div class="d-flex justify-content-center mt-3" *ngIf="isConnected">
+    <div class="grid-container" [ngStyle]="{ 'pointer-events: none': isYourTurn || hasSomeoneWon }">
+      <div class="grid-item" *ngFor="let item of gameGrid" (click)="move(item.cellPosition)">
+        {{ item?.storedChar }}
+      </div>
+    </div>
+  </div>
+</div>

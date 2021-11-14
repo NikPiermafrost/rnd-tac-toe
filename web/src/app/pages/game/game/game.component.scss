@@ -1,0 +1,29 @@
+.back-to-home, .rematch {
+  border-radius: 5px;
+  background-color: #f3f5ef;
+  text-align: center;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 5px;
+  width: 100%;
+  color: #373b47;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.grid-container div {
+  margin: 0 5px 5px 0;
+}
+
+.grid-item {
+  border: 5px solid #b99e9a;
+  font-size: 3.9rem;
+  text-align: center;
+  height: 100px;
+  width: 100px;
+  cursor: pointer;
+  margin: 3px !important;
+}

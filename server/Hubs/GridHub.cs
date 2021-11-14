@@ -3,8 +3,8 @@ using System.Threading.Tasks;
 
 namespace server.Hubs
 {
-	public class GridHub : Hub
-    {
+		public class GridHub : Hub
+  	{
     	public async Task OnUserConnect(string gameId, string username, int randomChanche)
     	{
       		await Groups.AddToGroupAsync(Context.ConnectionId, gameId);

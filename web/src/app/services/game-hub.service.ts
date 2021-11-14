@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Subject} from 'rxjs';
-import {HubConnection, HubConnectionBuilder} from '@aspnet/signalr';
+import {HttpTransportType, HubConnection, HubConnectionBuilder} from '@aspnet/signalr';
 import {environment} from '../../environments/environment';
 
 @Injectable({
@@ -13,9 +13,11 @@ export class GameHubService {
 
   constructor() {
     this.connection = new HubConnectionBuilder()
-      .withUrl(`${environment.backendUrl}/game-hub`)
+      .withUrl(`${environment.backendUrl}/game-hub`, {
+        skipNegotiation: true,
+        transport: HttpTransportType.WebSockets
+      })
       .build();
-    this.connect();
   }
 
   private connect(): void {
