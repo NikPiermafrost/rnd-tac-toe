@@ -1,0 +1,22 @@
+<main class="container-fluid">
+  <header>
+    <div class="d-flex justify-content-center pt-3">
+      <h1 class="main-title">
+        Rnd Tac Toe
+      </h1>
+    </div>
+    <div class="d-flex justify-content-center text-center">
+      <h2 class="main-subtitle" *ngIf="motd">
+        <span class="main-subtitle-text">
+          {{ motd }}
+        </span>
+      </h2>
+    </div>
+  </header>
+  <hr />
+  <section id="body">
+    <ng-content></ng-content>
+  </section>
+  <hr />
+  <app-footer></app-footer>
+</main>
