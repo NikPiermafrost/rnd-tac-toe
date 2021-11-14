@@ -4,6 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import {CommonUtilsModule} from './common-utils/common-utils.module';
+import {GameHelperService} from './services/game-helper.service';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,9 @@ import {CommonUtilsModule} from './common-utils/common-utils.module';
     AppRoutingModule,
     CommonUtilsModule
   ],
-  providers: [],
+  providers: [
+    GameHelperService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
