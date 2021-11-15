@@ -24,12 +24,12 @@ export class GameHelperService {
   constructor() { }
 
   setRandomnessValue(username: string): void {
-    const initialValue = Math.floor(Math.random() * 100);
+    const initialValue = Math.floor(Math.random() * 90) + 10;
+    const today = new Date().getDay();
     if (initialValue % 2 === 0) {
-      const today = new Date().getDay();
       this.storedRandomFactor = Math.floor(initialValue / (today + username.length));
     } else {
-      this.storedRandomFactor = initialValue - username.length
+      this.storedRandomFactor = Math.floor(initialValue / (today - username.length));
     }
   }
 
@@ -53,7 +53,7 @@ export class GameHelperService {
 
     for (let condition of this._conditions) {
       const result = grid[condition[0]].storedChar === grid[condition[1]].storedChar
-        && grid[condition[1]].storedChar && grid[condition[2]].storedChar;
+        && grid[condition[1]].storedChar === grid[condition[2]].storedChar;
 
       const validStringValue = grid[condition[0]].storedChar;
       if (result && (validStringValue || validStringValue.length)) {

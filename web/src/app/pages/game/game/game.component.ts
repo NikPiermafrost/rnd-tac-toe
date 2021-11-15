@@ -95,11 +95,11 @@ export class GameComponent implements OnInit, OnDestroy {
   }
 
   initializeGrid(): void {
-    Array(9).fill(null).forEach((_, index) => {
-      this.gameGrid.push({
+    this.gameGrid = Array(9).fill(null).map((_, index) => {
+      return {
         cellPosition: index,
         storedChar: ''
-      });
+      };
     });
   }
 
@@ -108,15 +108,18 @@ export class GameComponent implements OnInit, OnDestroy {
   }
 
   move(position: number): void {
-    const actualMove: number = this.willBeTheRightMove(position);
-    const requestedCell = this.gameGrid.find((cell) => cell.cellPosition === actualMove);
-    if (requestedCell?.storedChar === '') {
-      this.gameHubSrv.move(this.gameId, requestedCell.cellPosition, this.playerSymbol);
+    if (this.isYourTurn || !this.hasSomeoneWon) {
+      const actualMove: number = this.willBeTheRightMove(position);
+      const requestedCell = this.gameGrid.find((cell) => cell.cellPosition === actualMove);
+      if (requestedCell?.storedChar === '') {
+        this.gameHubSrv.move(this.gameId, requestedCell.cellPosition, this.playerSymbol);
+      }
     }
   }
 
   private willBeTheRightMove(requestedCell: number): number {
     const willItBe = Math.floor(Math.random() * 101) + 1;
+    console.log(this.currentRandomness, willItBe);
     if (this.currentRandomness === 0 || willItBe >= this.currentRandomness) {
       return requestedCell;
     }
@@ -124,23 +127,24 @@ export class GameComponent implements OnInit, OnDestroy {
   }
 
   private isNotTheRightMove(requestedCell: number): number {
-    if (this.gameGrid.filter(({ storedChar }) => !storedChar || !storedChar.length).length === 1) {
+    if (this.gameGrid.filter(({ storedChar }) => storedChar.length === 0).length === 1) {
       return requestedCell;
     }
 
     let isItEmpty: boolean = false;
     let potentialResponse: number = 0;
 
-    while (isItEmpty) {
+    while (!isItEmpty) {
       potentialResponse = Math.floor(Math.random() * 9);
       const cellRef = this.gameGrid[potentialResponse].storedChar;
-      isItEmpty = (!cellRef || cellRef === '') && (potentialResponse !== requestedCell);
+      isItEmpty = cellRef.length === 0 && potentialResponse !== requestedCell;
+      console.log(potentialResponse, cellRef, isItEmpty);
     }
     return potentialResponse;
   }
 
   private checkIfDraw(): boolean {
-    return !this.gameGrid.some(({storedChar}) => !storedChar || !storedChar.length);
+    return !this.gameGrid.some(({storedChar}) => storedChar.length === 0);
   }
 
   rematch(): void {
