@@ -1,6 +1,4 @@
-using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.ResponseCompression;
-using Microsoft.AspNetCore.SignalR;
 using server.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,8 +19,15 @@ builder.Services.AddSignalR();
 
 var app = builder.Build();
 
+var env = builder.Environment;
+
 app.UseCors();
 
 app.MapHub<GridHub>("/game-hub");
+
+if (!env.IsDevelopment())
+{
+    app.UseStaticFiles();
+}
 
 app.Run();
