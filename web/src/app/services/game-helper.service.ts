@@ -24,12 +24,12 @@ export class GameHelperService {
   constructor() { }
 
   setRandomnessValue(username: string): void {
-    const initialValue = Math.floor(Math.random() * 90) + 10;
+    const initialValue = Math.floor(Math.random() * 80) + 20;
     const today = new Date().getDay();
     if (initialValue % 2 === 0) {
-      this.storedRandomFactor = Math.floor(initialValue / (today + username.length));
+      this.storedRandomFactor = initialValue - username.length;
     } else {
-      this.storedRandomFactor = Math.floor(initialValue / (today - username.length));
+      this.storedRandomFactor = initialValue + username.length;
     }
   }
 
