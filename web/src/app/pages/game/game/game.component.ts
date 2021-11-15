@@ -3,7 +3,6 @@ import {GameHelperService} from '../../../services/game-helper.service';
 import {GameHubService} from '../../../services/game-hub.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {TicTacToeCellModel} from '../../../models/tic-tac-toe-cell.model';
-import {HubConnection} from '@aspnet/signalr';
 import {Subscription} from 'rxjs';
 import {MoveModel} from '../../../models/move.model';
 import {PlayerModel} from '../../../models/player.model';

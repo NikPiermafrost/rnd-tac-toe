@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Subject} from 'rxjs';
-import {HttpTransportType, HubConnection, HubConnectionBuilder} from '@aspnet/signalr';
+import {HttpTransportType, HubConnection, HubConnectionBuilder} from '@microsoft/signalr';
 import {environment} from '../../environments/environment';
 import {PlayerModel} from '../models/player.model';
 import {MoveModel} from '../models/move.model';

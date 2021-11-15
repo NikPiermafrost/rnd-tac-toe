@@ -27,7 +27,7 @@ app.MapHub<GridHub>("/game-hub");
 
 if (!env.IsDevelopment())
 {
-    app.UseStaticFiles();
+    app.UseFileServer();
 }
 
 app.Run();
