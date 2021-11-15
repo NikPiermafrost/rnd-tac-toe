@@ -1,10 +1,11 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import {IndexComponent} from './pages/index/index.component';
 
 const routes: Routes = [
   {
     path: '',
-    loadChildren: () => import('./pages/index/index.module').then(m => m.IndexModule)
+    component: IndexComponent
   },
   {
     path: 'game',

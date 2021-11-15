@@ -5,15 +5,20 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import {CommonUtilsModule} from './common-utils/common-utils.module';
 import {GameHelperService} from './services/game-helper.service';
+import {IndexComponent} from './pages/index/index.component';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    IndexComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    CommonUtilsModule
+    CommonUtilsModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [
     GameHelperService

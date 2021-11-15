@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import { v4 as uuid } from 'uuid';
-import {GameHelperService} from '../../../services/game-helper.service';
+import {GameHelperService} from '../../services/game-helper.service';
 import {Router} from '@angular/router';
 
 @Component({
