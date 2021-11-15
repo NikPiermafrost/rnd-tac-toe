@@ -11,6 +11,10 @@ const routes: Routes = [
     loadChildren: () => import('./pages/game/game.module').then(m => m.GameModule)
   },
   {
+    path: 'about',
+    loadChildren: () => import('./pages/about/about.module').then(m => m.AboutModule)
+  },
+  {
     path: '**',
     redirectTo: ''
   }
