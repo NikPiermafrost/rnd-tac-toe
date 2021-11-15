@@ -11,10 +11,13 @@
     <h4>{{ isYourTurn ? playerName : opponentName }} Turn!</h4>
   </div>
   <div class="d-flex justify-content-center mt-3" *ngIf="isConnected">
-    <div class="grid-container" [ngStyle]="{ 'pointer-events: none': isYourTurn || hasSomeoneWon }">
+    <div class="grid-container" [ngStyle]="{ 'pointer-events: none': !isYourTurn || hasSomeoneWon }">
       <div class="grid-item" *ngFor="let item of gameGrid" (click)="move(item.cellPosition)">
         {{ item?.storedChar }}
       </div>
     </div>
+  </div>
+  <div class="w-100 mt-3" *ngIf="hasSomeoneWon" (click)="rematch()">
+    <div class="rematch">{{ isYourTurn ? 'Rematch!' : 'Waiting for opponent to accept...' }}</div>
   </div>
 </div>

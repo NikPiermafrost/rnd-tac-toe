@@ -3,6 +3,10 @@ import {GameHelperService} from '../../../services/game-helper.service';
 import {GameHubService} from '../../../services/game-hub.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {TicTacToeCellModel} from '../../../models/tic-tac-toe-cell.model';
+import {HubConnection} from '@aspnet/signalr';
+import {Subscription} from 'rxjs';
+import {MoveModel} from '../../../models/move.model';
+import {PlayerModel} from '../../../models/player.model';
 
 @Component({
   selector: 'app-game',
@@ -18,6 +22,14 @@ export class GameComponent implements OnInit, OnDestroy {
   isConnected: boolean = true;
   hasSomeoneWon: boolean = false;
   currentRandomness: number = 0;
+  playerSymbol: string = '';
+
+  connectionStateSubscription!: Subscription;
+  hasExitedSubscription!: Subscription;
+  restartMatchSubscription!: Subscription;
+  moveSubscription!: Subscription;
+  receiveOpponentSubscription!: Subscription;
+
 
   gameGrid: TicTacToeCellModel[] = [];
 
@@ -31,7 +43,55 @@ export class GameComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
       this.gameId = params['gameId'];
+    });
+
+    this.connectionStateSubscription = this.gameHubSrv.connectionState$.subscribe((res: boolean) => {
+      this.isConnected = res;
+      this.gameHubSrv.sendInitialCall(this.gameId, this.playerName, this.currentRandomness);
+    });
+
+    this.hasExitedSubscription = this.gameHubSrv.hasExited$.subscribe((res: unknown) => {
+      console.log(res);
     })
+
+    this.restartMatchSubscription = this.gameHubSrv.restartMatch$.subscribe(() => {
+      this.initializeGrid();
+      const hasStarted: boolean = this.gameHelperSrv.getHasStartedStatus();
+      this.isYourTurn = !hasStarted;
+      this.gameHelperSrv.setGameHasStarted(!hasStarted);
+      this.gameHelperSrv.setRandomnessValue(this.playerName);
+      this.currentRandomness = this.gameHelperSrv.getCurrentRandomness();
+    });
+
+    this.moveSubscription = this.gameHubSrv.move$.subscribe((res: MoveModel) => {
+      this.gameGrid[res.position].storedChar = res.symbol;
+      this.isYourTurn = res.symbol !== this.playerSymbol;
+      this.hasSomeoneWon = this.gameHelperSrv.hasSomeoneWon(this.gameGrid);
+      if (this.checkIfDraw()) {
+        this.hasSomeoneWon = true;
+      }
+    });
+
+    this.receiveOpponentSubscription = this.gameHubSrv.receivedOpponent$.subscribe((res: PlayerModel) => {
+      console.log(`Opponent received: ${res.username}`);
+      if (this.playerName !== res.username && (!this.opponentName && !this.opponentName.length)) {
+        this.opponentName = res.username;
+        this.gameHubSrv.sendInitialCall(this.gameId, this.playerName, this.currentRandomness);
+      }
+    });
+
+    this.playerName = this.gameHelperSrv.storedUserName;
+    this.currentRandomness = this.gameHelperSrv.storedRandomFactor;
+
+    const hasStarted = this.gameHelperSrv.getHasStartedStatus();
+    this.playerSymbol = hasStarted ? 'O' : 'X';
+    this.isYourTurn = hasStarted;
+
+    if (!this.playerName || !this.playerName.length) {
+      this.router.navigate(['/']);
+    }
+
+    this.gameHubSrv.connect();
   }
 
   initializeGrid(): void {
@@ -50,14 +110,14 @@ export class GameComponent implements OnInit, OnDestroy {
   move(position: number): void {
     const actualMove: number = this.willBeTheRightMove(position);
     const requestedCell = this.gameGrid.find((cell) => cell.cellPosition === actualMove);
-    if (requestedCell?.storedChar || requestedCell?.storedChar.length) {
-      // implement move
+    if (requestedCell?.storedChar === '') {
+      this.gameHubSrv.move(this.gameId, requestedCell.cellPosition, this.playerSymbol);
     }
   }
 
   private willBeTheRightMove(requestedCell: number): number {
     const willItBe = Math.floor(Math.random() * 101) + 1;
-    if (!this.currentRandomness || willItBe >= this.currentRandomness) {
+    if (this.currentRandomness === 0 || willItBe >= this.currentRandomness) {
       return requestedCell;
     }
     return this.isNotTheRightMove(requestedCell);
@@ -74,7 +134,7 @@ export class GameComponent implements OnInit, OnDestroy {
     while (isItEmpty) {
       potentialResponse = Math.floor(Math.random() * 9);
       const cellRef = this.gameGrid[potentialResponse].storedChar;
-      isItEmpty = (!cellRef || !cellRef.length) && (potentialResponse !== requestedCell);
+      isItEmpty = (!cellRef || cellRef === '') && (potentialResponse !== requestedCell);
     }
     return potentialResponse;
   }
@@ -83,8 +143,33 @@ export class GameComponent implements OnInit, OnDestroy {
     return !this.gameGrid.some(({storedChar}) => !storedChar || !storedChar.length);
   }
 
-  ngOnDestroy(): void {
+  rematch(): void {
+    this.gameHubSrv.rematch(this.gameId);
+  }
 
+  ngOnDestroy(): void {
+    try {
+      this.gameHubSrv.removeFromGroup(this.gameId, this.playerName);
+      this.gameHubSrv.disconnect();
+    } catch {
+      this.gameHubSrv.disconnect();
+      this.router.navigate(['/']);
+    }
+    if (this.connectionStateSubscription) {
+      this.connectionStateSubscription.unsubscribe();
+    }
+    if (this.hasExitedSubscription) {
+      this.hasExitedSubscription.unsubscribe();
+    }
+    if (this.restartMatchSubscription) {
+      this.receiveOpponentSubscription.unsubscribe();
+    }
+    if (this.moveSubscription) {
+      this.moveSubscription.unsubscribe();
+    }
+    if (this.receiveOpponentSubscription) {
+      this.receiveOpponentSubscription.unsubscribe();
+    }
   }
 
 }
