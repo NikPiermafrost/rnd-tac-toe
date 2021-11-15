@@ -11,6 +11,8 @@ builder.Services.AddCors(options => options.AddPolicy("CorsPolicy", o =>
 
 builder.Services.AddResponseCompression(opts => 
 {
+    opts.Providers.Add<BrotliCompressionProvider>();
+    opts.Providers.Add<GzipCompressionProvider>();
     opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
         new[] { "application/octet-stream" });
 });
@@ -22,6 +24,8 @@ var app = builder.Build();
 var env = builder.Environment;
 
 app.UseCors();
+
+app.UseResponseCompression();
 
 app.MapHub<GridHub>("/game-hub");
 
