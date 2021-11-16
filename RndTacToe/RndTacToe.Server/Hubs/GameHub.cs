@@ -2,7 +2,7 @@
 
 namespace RndTacToe.Server.Hubs
 {
-    public class GameHub: Hub
+    public class GameHub : Hub
     {
         public async Task OnUserConnect(string gameId, string username, int randomChanche)
         {
