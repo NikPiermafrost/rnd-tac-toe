@@ -16,18 +16,18 @@ RUN ng build --prod
 FROM mcr.microsoft.com/dotnet/sdk:6.0-alpine AS build
 
 WORKDIR /src
-COPY ["server/server.csproj", "server/"]
-RUN dotnet restore "server/server.csproj"
-COPY ./server/* ./server/
+COPY ["RndTacToe/RndTacToe.Server/RndTacToe.Server.csproj", "server/"]
+RUN dotnet restore "RndTacToe/RndTacToe.Server/RndTacToe.Server.csproj"
+COPY ./RndTacToe/RndTacToe.Server/* ./server/
 WORKDIR "/src/server"
-RUN dotnet build "server.csproj" -c Release -o /app/build
+RUN dotnet build "RndTacToe.Server.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "server.csproj" -c Release -o /app/publish
+RUN dotnet publish "RndTacToe.Server.csproj" -c Release -o /app/publish
 RUN mkdir /app/publish/wwwroot
 COPY --from=build-angular /angular-build/dist/web/* /app/publish/wwwroot/
 
 FROM base as final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "server.dll"]
+ENTRYPOINT ["dotnet", "RndTacToe.Server.dll"]
