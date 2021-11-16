@@ -17,7 +17,7 @@ FROM mcr.microsoft.com/dotnet/sdk:6.0-alpine AS build
 
 WORKDIR /src
 COPY ["RndTacToe/RndTacToe.Server/RndTacToe.Server.csproj", "server/"]
-RUN dotnet restore "RndTacToe/RndTacToe.Server/RndTacToe.Server.csproj"
+RUN dotnet restore "./server/RndTacToe.Server.csproj"
 COPY ./RndTacToe/RndTacToe.Server/* ./server/
 WORKDIR "/src/server"
 RUN dotnet build "RndTacToe.Server.csproj" -c Release -o /app/build
