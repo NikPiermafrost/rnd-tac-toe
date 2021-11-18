@@ -17,7 +17,10 @@
       </div>
     </div>
   </div>
-  <div class="w-100 mt-3" *ngIf="hasSomeoneWon" (click)="rematch()">
+  <div class="w-100 mt-3" *ngIf="hasSomeoneWon && !opponentHasDisconnected" (click)="rematch()">
     <div class="rematch">{{ isYourTurn ? 'Rematch!' : 'Waiting for opponent to accept...' }}</div>
+  </div>
+  <div class="w-100 mt-3 text-center" *ngIf="opponentHasDisconnected">
+    Your opponent has disconnected, redirecting to home in a second...
   </div>
 </div>
