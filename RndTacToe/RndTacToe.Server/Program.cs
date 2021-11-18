@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.ResponseCompression;
+using RndTacToe.ConnectionManager;
 using RndTacToe.Server.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -23,8 +24,9 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
 builder.Services.AddSignalR();
+// services
+builder.Services.AddSingleton<IHubGroupManager, HubGroupManager>();
 
 var app = builder.Build();
 
