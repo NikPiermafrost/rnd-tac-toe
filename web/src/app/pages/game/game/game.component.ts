@@ -22,6 +22,7 @@ export class GameComponent implements OnInit, OnDestroy {
   hasSomeoneWon: boolean = false;
   currentRandomness: number = 0;
   playerSymbol: string = '';
+  opponentHasDisconnected?: string;
 
   connectionStateSubscription!: Subscription;
   hasExitedSubscription!: Subscription;
@@ -49,8 +50,11 @@ export class GameComponent implements OnInit, OnDestroy {
       this.gameHubSrv.sendInitialCall(this.gameId, this.playerName, this.currentRandomness);
     });
 
-    this.hasExitedSubscription = this.gameHubSrv.hasExited$.subscribe((res: unknown) => {
-      console.log(res);
+    this.hasExitedSubscription = this.gameHubSrv.hasExited$.subscribe((res: string) => {
+      this.opponentHasDisconnected = res;
+      setTimeout(() => {
+        this.router.navigate(['/']);
+      }, 2500);
     })
 
     this.restartMatchSubscription = this.gameHubSrv.restartMatch$.subscribe(() => {
@@ -152,7 +156,7 @@ export class GameComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     try {
-      this.gameHubSrv.removeFromGroup(this.gameId, this.playerName);
+      this.gameHubSrv.removeFromGroup(this.gameId);
       this.gameHubSrv.disconnect();
     } catch {
       this.gameHubSrv.disconnect();

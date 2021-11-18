@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.ResponseCompression;
+using RndTacToe.ConnectionManager;
 using RndTacToe.Server.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,21 +18,34 @@ builder.Services.AddResponseCompression(opts =>
         new[] { "application/octet-stream" });
 });
 
+// Add services to the container.
+
+builder.Services.AddControllers();
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 builder.Services.AddSignalR();
+// services
+builder.Services.AddSingleton<IHubGroupManager, HubGroupManager>();
 
 var app = builder.Build();
 
-var env = builder.Environment;
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 
-app.UseCors();
-
-app.UseResponseCompression();
-
-app.MapHub<GameHub>("/game-hub");
-
-if (!env.IsDevelopment())
+if (!app.Environment.IsDevelopment())
 {
     app.UseFileServer();
 }
+
+app.MapHub<GameHub>("/game-hub");
+
+//app.UseAuthorization();
+
+app.MapControllers();
 
 app.Run();

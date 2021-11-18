@@ -13,7 +13,7 @@ export class GameHubService {
   receivedOpponent$ = new Subject<PlayerModel>();
   move$ = new Subject<MoveModel>();
   restartMatch$ = new Subject<void>();
-  hasExited$ = new Subject<unknown>();
+  hasExited$ = new Subject<string>();
   connectionState$ = new Subject<boolean>();
 
   connection : HubConnection;
@@ -41,7 +41,7 @@ export class GameHubService {
       this.restartMatch$.next();
     });
 
-    this.connection.on('HasExited', (message) => {
+    this.connection.on('HasExited', (message: string) => {
       this.hasExited$.next(message);
     });
 
@@ -67,8 +67,8 @@ export class GameHubService {
     this.connection.send('MoveSelected', gameId, cellPosition, symbol);
   }
 
-  removeFromGroup(gameId: string, currentPlayerName: string): void {
-    this.connection.send('RemoveFromGroup', gameId, currentPlayerName);
+  removeFromGroup(gameId: string): void {
+    this.connection.send('RemoveFromGroup', gameId);
   }
 
   disconnect(): void {
