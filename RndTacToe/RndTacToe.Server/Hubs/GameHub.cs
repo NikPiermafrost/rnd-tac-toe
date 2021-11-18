@@ -41,13 +41,17 @@ namespace RndTacToe.Server.Hubs
             await Clients.Group(gameId).SendAsync("RestartMatch");
         }
 
-        public override async Task OnConnectedAsync()
+        public override async Task OnDisconnectedAsync(Exception? exception)
         {
+            Console.WriteLine("HAHA!");
             var game = _groupManager.GetGroupIdFromConnectionId(Context.ConnectionId);
             if (game != null)
             {
+                Console.WriteLine("HAHA!");
                 await Clients.Group(game.GroupId).SendAsync("HasExited", "Your opponent has exited the game");
+                _groupManager.RemoveGroupByGameId(game.GroupId);
             }
+            await base.OnDisconnectedAsync(exception);
         }
     }
 }

@@ -5,36 +5,34 @@
         public List<Group> ActiveGroups { get; set; }
         public HubGroupManager()
         {
-            this.ActiveGroups = new List<Group>();
+            ActiveGroups = new List<Group>();
         }
 
         public void AddGroupToActiveGroups(string groupId, string connectionId)
         {
             var group = new Group { GroupId = groupId, ConnectionId = connectionId };
             ActiveGroups.Add(group);
+            Console.WriteLine(ActiveGroups);
         }
 
         public void RemoveGroupByGameId(string groupId)
         {
-            var groupToFind = ActiveGroups.FirstOrDefault(x => x.GroupId == groupId);
-            if (groupToFind != null)
-            {
-                ActiveGroups.Remove(groupToFind);
-            }
+            ActiveGroups.RemoveAll(x => x.GroupId.Equals(groupId));
         }
 
         public void RemoveGroupByConnectionId(string connectionId)
         {
-            var groupToFind = GetGroupIdFromConnectionId(connectionId);
-            if (groupToFind != null)
-            {
-                ActiveGroups.Remove(groupToFind);
-            }
+            ActiveGroups.RemoveAll(x => x.ConnectionId.Equals(connectionId));
         }
 
         public Group GetGroupIdFromConnectionId(string connectionId)
         {
-            return ActiveGroups.FirstOrDefault(x => x.ConnectionId == connectionId);
+            return ActiveGroups.FirstOrDefault(x => x.ConnectionId.Equals(connectionId));
+        }
+
+        public bool GroupExists(string groupId)
+        {
+            return ActiveGroups.FirstOrDefault(x => x.GroupId.Equals(groupId)) != null;
         }
     }
 }
