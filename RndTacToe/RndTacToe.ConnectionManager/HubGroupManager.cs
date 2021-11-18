@@ -12,7 +12,6 @@
         {
             var group = new Group { GroupId = groupId, ConnectionId = connectionId };
             ActiveGroups.Add(group);
-            Console.WriteLine(ActiveGroups);
         }
 
         public void RemoveGroupByGameId(string groupId)
