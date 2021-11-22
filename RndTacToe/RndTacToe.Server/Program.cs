@@ -3,7 +3,7 @@ using RndTacToe.ConnectionManager;
 using RndTacToe.Lobby.DataAccess;
 using RndTacToe.Server.Hubs;
 using Microsoft.EntityFrameworkCore;
-
+using RndTacToe.Lobby.Core;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,6 +31,8 @@ builder.Services.AddSignalR();
 // services
 builder.Services.AddDbContext<LobbyContext>(options => 
     options.UseInMemoryDatabase(databaseName: "Lobby"));
+
+builder.Services.AddScoped<ILobbyService, LobbyService>();
 
 builder.Services.AddSingleton<IHubGroupManager, HubGroupManager>();
 
