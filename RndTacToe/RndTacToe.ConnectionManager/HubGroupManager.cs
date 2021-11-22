@@ -1,4 +1,6 @@
-﻿namespace RndTacToe.ConnectionManager
+﻿using RndTacToe.Models.ConnectionManager;
+
+namespace RndTacToe.ConnectionManager
 {
     public class HubGroupManager : IHubGroupManager
     {
@@ -10,7 +12,7 @@
 
         public void AddGroupToActiveGroups(string groupId, string connectionId)
         {
-            var group = new Group { GroupId = groupId, ConnectionId = connectionId };
+            var group = new Group(groupId, connectionId);
             ActiveGroups.Add(group);
         }
 

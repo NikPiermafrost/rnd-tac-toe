@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\RndTacToe.Lobby.DataAccess\RndTacToe.Lobby.DataAccess.csproj" />
+    <ProjectReference Include="..\RndTacToe.Models\RndTacToe.Models.csproj" />
+  </ItemGroup>
+
 </Project>

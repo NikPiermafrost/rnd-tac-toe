@@ -1,4 +1,6 @@
-﻿namespace RndTacToe.ConnectionManager
+﻿using RndTacToe.Models.ConnectionManager;
+
+namespace RndTacToe.ConnectionManager
 {
     public interface IHubGroupManager
     {
