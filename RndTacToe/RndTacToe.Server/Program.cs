@@ -1,6 +1,9 @@
 using Microsoft.AspNetCore.ResponseCompression;
 using RndTacToe.ConnectionManager;
+using RndTacToe.Lobby.DataAccess;
 using RndTacToe.Server.Hubs;
+using Microsoft.EntityFrameworkCore;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,6 +29,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSignalR();
 // services
+builder.Services.AddDbContext<LobbyContext>(options => 
+    options.UseInMemoryDatabase(databaseName: "Lobby"));
+
 builder.Services.AddSingleton<IHubGroupManager, HubGroupManager>();
 
 var app = builder.Build();
