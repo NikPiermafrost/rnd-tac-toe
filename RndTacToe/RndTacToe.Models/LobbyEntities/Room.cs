@@ -13,12 +13,10 @@ namespace RndTacToe.Models.LobbyEntities
         {
             GameId = gameId;
             PlayerName = playerName;
-            IsPrivate = false;
         }
         [Key]
         public int RoomId { get; set; }
         public string GameId { get; set; }
         public string PlayerName { get; set; }
-        public bool IsPrivate { get; set; }
     }
 }

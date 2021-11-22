@@ -7,9 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RndTacToe.Server", "RndTacT
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RndTacToe.ConnectionManager", "RndTacToe.ConnectionManager\RndTacToe.ConnectionManager.csproj", "{3DDE13B4-900A-4DA3-8FB6-4E96BB570633}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RndTacToe.Lobby.DataAccess", "RndTacToe.Lobby.DataAccess\RndTacToe.Lobby.DataAccess.csproj", "{1C54E76C-3D82-4154-B836-2DCC2A3C6829}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RndTacToe.Lobby.DataAccess", "RndTacToe.Lobby.DataAccess\RndTacToe.Lobby.DataAccess.csproj", "{1C54E76C-3D82-4154-B836-2DCC2A3C6829}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RndTacToe.Models", "RndTacToe.Models\RndTacToe.Models.csproj", "{FB8232F6-3EF0-4C56-B9D6-05DD5C73BEB9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RndTacToe.Models", "RndTacToe.Models\RndTacToe.Models.csproj", "{FB8232F6-3EF0-4C56-B9D6-05DD5C73BEB9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RndTacToe.Lobby.Core", "RndTacToe.Lobby.Core\RndTacToe.Lobby.Core.csproj", "{0356F127-0982-487B-BDC9-276DA5606D8C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{FB8232F6-3EF0-4C56-B9D6-05DD5C73BEB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FB8232F6-3EF0-4C56-B9D6-05DD5C73BEB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FB8232F6-3EF0-4C56-B9D6-05DD5C73BEB9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0356F127-0982-487B-BDC9-276DA5606D8C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0356F127-0982-487B-BDC9-276DA5606D8C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0356F127-0982-487B-BDC9-276DA5606D8C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0356F127-0982-487B-BDC9-276DA5606D8C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
