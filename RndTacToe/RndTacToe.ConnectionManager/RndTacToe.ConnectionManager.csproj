@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\RndTacToe.Lobby.DataAccess\RndTacToe.Lobby.DataAccess.csproj" />
+    <ProjectReference Include="..\RndTacToe.Lobby.Core\RndTacToe.Lobby.Core.csproj" />
     <ProjectReference Include="..\RndTacToe.Models\RndTacToe.Models.csproj" />
   </ItemGroup>
 
