@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using RndTacToe.Lobby.Core;
+using RndTacToe.Models.LobbyDtos;
 
 namespace RndTacToe.Server.Controllers
 {
@@ -7,10 +9,29 @@ namespace RndTacToe.Server.Controllers
     [ApiController]
     public class LobbyController : ControllerBase
     {
-        [HttpGet]
+        private readonly ILobbyService _lobbyService;
+        public LobbyController(ILobbyService lobbyService)
+        {
+            _lobbyService = lobbyService;
+        }
+
+        [HttpGet("[action]")]
         public async Task<IActionResult> GetLobby()
         {
-            return Ok("Creata la lobby");
+            return Ok(await _lobbyService.GetLobbyAsync());
+        }
+
+        [HttpPost("[action]")]
+        public async Task<IActionResult> NewGame([FromBody] NewRoomDto newRoom)
+        {
+            try
+            {
+                return Ok(await _lobbyService.NewGameAsync(newRoom));
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, false);
+            }
         }
     }
 }
