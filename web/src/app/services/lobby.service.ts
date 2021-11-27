@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs';
-import { RoomModel } from '../models/room.model';
+import { RoomModel, RoomResponseModel } from '../models/room.model';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +21,7 @@ export class LobbyService {
     return this.http.get<boolean>(`${this.baseRoute}/getroomexistence/${gameId}`)
   }
 
-  newRoom(newRoom: RoomModel): Observable<boolean> {
-    return this.http.post<boolean>(`${this.baseRoute}/newgame`, newRoom);
+  newRoom(newRoom: RoomModel): Observable<RoomResponseModel> {
+    return this.http.post<RoomResponseModel>(`${this.baseRoute}/newgame`, newRoom);
   }
 }
