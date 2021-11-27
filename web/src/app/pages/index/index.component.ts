@@ -1,23 +1,27 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import { v4 as uuid } from 'uuid';
-import {GameHelperService} from '../../services/game-helper.service';
-import {Router} from '@angular/router';
+import { GameHelperService } from '../../services/game-helper.service';
+import { Router } from '@angular/router';
+import { LobbyService } from '../../services/lobby.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-index',
   templateUrl: './index.component.html',
   styleUrls: ['./index.component.scss']
 })
-export class IndexComponent implements OnInit {
+export class IndexComponent implements OnInit, OnDestroy {
 
   startForm!: FormGroup;
   isJoin: boolean = false;
   randomGameCode: string = '';
+  newGameSubscription?: Subscription;
 
   constructor(private formBuilder: FormBuilder,
               private gameHelperSrv: GameHelperService,
-              private router: Router) { }
+              private router: Router,
+              private lobbySrv: LobbyService) { }
 
   ngOnInit(): void {
     this.initializeGameString();
@@ -33,10 +37,7 @@ export class IndexComponent implements OnInit {
   }
 
   initializeGameString(): void {
-    this.randomGameCode = uuid()
-      .split('-')
-      .splice(0, 3)
-      .join('');
+    this.randomGameCode = uuid();
   }
 
   onNewClick(): void {
@@ -74,9 +75,39 @@ export class IndexComponent implements OnInit {
       this.gameHelperSrv.setGameHasStarted(false);
       this.router.navigate(['game', this.startForm.get('gameCode')?.value]);
     } else {
-      this.gameHelperSrv.setGameHasStarted(true);
-      this.router.navigate(['game', this.randomGameCode]);
+      if (this.startForm.get('public')?.value) {
+        this.newGameSubscription = this.lobbySrv.newRoom({
+          playerName: this.startForm.get('username')?.value,
+          gameId: this.randomGameCode
+        }).subscribe({
+          next: (res: boolean) => this.nextResult(res),
+          error: (error: Error) => this.errorResult(error)
+        })
+      } else {
+        this.initializeGame();
+      }
     }
+  }
+
+  ngOnDestroy(): void {
+    this.newGameSubscription?.unsubscribe();
+  }
+
+  private nextResult(res: boolean): void {
+    if (res) {
+      this.initializeGame();
+    } else {
+      window.alert('Could not create new room');
+    }
+  }
+
+  private errorResult(error: Error) {
+    window.alert(`Could not create game, reason: ${error.message}`);
+  }
+
+  private initializeGame(): void {
+    this.gameHelperSrv.setGameHasStarted(true);
+    this.router.navigate(['game', this.randomGameCode]);
   }
 
 }
