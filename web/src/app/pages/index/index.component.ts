@@ -27,7 +27,8 @@ export class IndexComponent implements OnInit {
         Validators.required,
         Validators.minLength(4),
         Validators.maxLength(16)
-      ])
+      ]),
+      public: new FormControl(false)
     })
   }
 
@@ -43,12 +44,18 @@ export class IndexComponent implements OnInit {
     if (this.startForm.controls['gameCode']) {
       this.startForm.removeControl('gameCode');
     }
+    if (!this.startForm.controls['public']) {
+      this.startForm.addControl('public', new FormControl(false));
+    }
   }
 
   onJoinClick(): void {
     this.isJoin = true;
     if (!this.startForm.controls['gameCode']) {
       this.startForm.addControl('gameCode', new FormControl(''))
+    }
+    if (this.startForm.controls['public']) {
+      this.startForm.removeControl('public');
     }
   }
 
