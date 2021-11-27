@@ -17,6 +17,10 @@ export class LobbyService {
     return this.http.get<RoomModel[]>(`${this.baseRoute}/getlobby`);
   }
 
+  getRoomExistence(gameId: string): Observable<boolean> {
+    return this.http.get<boolean>(`${this.baseRoute}/getroomexistence/${gameId}`)
+  }
+
   newRoom(newRoom: RoomModel): Observable<boolean> {
     return this.http.post<boolean>(`${this.baseRoute}/newgame`, newRoom);
   }
