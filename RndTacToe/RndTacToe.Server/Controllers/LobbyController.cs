@@ -39,9 +39,9 @@ namespace RndTacToe.Server.Controllers
             {
                 return Ok(await _lobbyService.NewGameAsync(newRoom));
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return StatusCode(500, false);
+                return StatusCode(500, ex.Message);
             }
         }
     }

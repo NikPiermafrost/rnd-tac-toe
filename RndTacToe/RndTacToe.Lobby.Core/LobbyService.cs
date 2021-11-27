@@ -29,18 +29,35 @@ namespace RndTacToe.Lobby.Core
             return null;
         }
 
-        public async Task<bool> NewGameAsync(NewRoomDto newRoom)
+        public async Task<NewRoomResponse> NewGameAsync(NewRoomDto newRoom)
         {
             try
             {
+                var lobbies = await GetLobbyAsync();
+                if (lobbies.Count() >= 50)
+                {
+                    return new NewRoomResponse
+                    {
+                        IsCreated = false,
+                        Reason = "Lobby is full, please wait to create another game"
+                    };
+                }
                 var roomToInsert = new Room(newRoom.GameId, newRoom.PlayerName);
                 await _context.Rooms.AddAsync(roomToInsert);
                 await _context.SaveChangesAsync();
-                return true;
+                return new NewRoomResponse()
+                {
+                    IsCreated = true
+                };
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return false;
+
+                return new NewRoomResponse
+                {
+                    IsCreated = false,
+                    Reason = ex.Message
+                };
             }
         }
 
