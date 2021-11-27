@@ -21,7 +21,7 @@ namespace RndTacToe.Lobby.Core
 
         public async Task<LobbyDto?> GetLobbyDetail(string gameId)
         {
-            var roomToFind = await _context.Rooms.SingleAsync(x => x.GameId == gameId);
+            var roomToFind = await _context.Rooms.FirstOrDefaultAsync(x => x.GameId == gameId);
             if (roomToFind != null)
             {
                 return new LobbyDto(gameId, roomToFind.PlayerName);
