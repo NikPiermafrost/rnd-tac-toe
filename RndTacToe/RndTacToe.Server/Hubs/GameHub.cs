@@ -18,12 +18,12 @@ namespace RndTacToe.Server.Hubs
         {
             try
             {
-                _groupManager.AddGroupToActiveGroups(gameId, Context.ConnectionId);
                 var gameDetail = await _lobbyService.GetLobbyDetail(gameId);
-                if (gameDetail != null)
+                if (gameDetail != null && _groupManager.GroupExists(gameId))
                 {
                     await _lobbyService.DeleteGameAsync(gameId);
                 }
+                _groupManager.AddGroupToActiveGroups(gameId, Context.ConnectionId);
                 await Groups.AddToGroupAsync(Context.ConnectionId, gameId);
                 await Clients.Group(gameId).SendAsync("ReceiveOpponent", username, randomChanche);
             }
