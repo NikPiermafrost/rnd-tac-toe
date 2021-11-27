@@ -20,6 +20,14 @@
     </div>
 
     <ng-container *ngIf="!isJoin">
+      <div class="form-group" style="margin-bottom: .5rem;">
+        <input type="checkbox" formControlName="public" id="public" class="form-check-input" />
+        <label class="form-check-label mr-1" for="publix">
+          Public
+        </label>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="!isJoin">
       <span style="font-size: 1.5rem; margin-bottom: .5rem; display: inline-block">New Game</span>
       <div class="w-100" *ngIf="randomGameCode.length">
         <div class="room-code" (click)="copyGameCodeToClipBoard()">Copy room code</div>

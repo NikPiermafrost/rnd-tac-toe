@@ -3,10 +3,11 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import {CommonUtilsModule} from './common-utils/common-utils.module';
-import {GameHelperService} from './services/game-helper.service';
-import {IndexComponent} from './pages/index/index.component';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { CommonUtilsModule } from './common-utils/common-utils.module';
+import { GameHelperService } from './services/game-helper.service';
+import { IndexComponent } from './pages/index/index.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
     AppRoutingModule,
     CommonUtilsModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    HttpClientModule
   ],
   providers: [
     GameHelperService
