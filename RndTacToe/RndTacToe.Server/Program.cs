@@ -10,7 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddCors(options => options.AddPolicy("CorsPolicy", o =>
     o.AllowAnyHeader()
     .AllowAnyMethod()
-    .WithOrigins("http://localhost:4200")
+    .AllowAnyOrigin()
 ));
 
 builder.Services.AddResponseCompression(opts =>
@@ -53,6 +53,8 @@ if (!app.Environment.IsDevelopment())
 app.MapHub<GameHub>("/game-hub");
 
 //app.UseAuthorization();
+
+app.UseCors("CorsPolicy");
 
 app.MapControllers();
 
