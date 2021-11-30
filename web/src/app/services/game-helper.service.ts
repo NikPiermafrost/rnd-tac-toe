@@ -45,6 +45,10 @@ export class GameHelperService {
     this.storedUserName = username;
   }
 
+  getCurrentUsername(): string {
+    return this.storedUserName;
+  }
+
   getCurrentRandomness(): number {
     return this.storedRandomFactor;
   }

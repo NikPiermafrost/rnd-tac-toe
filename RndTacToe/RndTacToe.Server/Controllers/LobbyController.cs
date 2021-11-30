@@ -21,6 +21,17 @@ namespace RndTacToe.Server.Controllers
             return Ok(await _lobbyService.GetLobbyAsync());
         }
 
+        [HttpGet("[action]/{gameId}")]
+        public async Task<IActionResult> GetRoomExistence(string gameId)
+        {
+            var gameToFind = await _lobbyService.GetLobbyDetail(gameId);
+            if (gameToFind == null)
+            {
+                return Ok(false);
+            }
+            return Ok(true);
+        }
+
         [HttpPost("[action]")]
         public async Task<IActionResult> NewGame([FromBody] NewRoomDto newRoom)
         {
@@ -28,9 +39,9 @@ namespace RndTacToe.Server.Controllers
             {
                 return Ok(await _lobbyService.NewGameAsync(newRoom));
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return StatusCode(500, false);
+                return StatusCode(500, ex.Message);
             }
         }
     }

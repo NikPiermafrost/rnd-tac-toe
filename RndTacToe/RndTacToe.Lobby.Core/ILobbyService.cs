@@ -7,6 +7,6 @@ namespace RndTacToe.Lobby.Core
         Task<bool> DeleteGameAsync(string gameId);
         Task<IEnumerable<LobbyDto>> GetLobbyAsync();
         Task<LobbyDto?> GetLobbyDetail(string gameId);
-        Task<bool> NewGameAsync(NewRoomDto newRoom);
+        Task<NewRoomResponse> NewGameAsync(NewRoomDto newRoom);
     }
 }
