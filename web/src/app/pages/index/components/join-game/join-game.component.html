@@ -1,1 +1,39 @@
-<p>join-game works!</p>
+<form (submit)="onSubmit()" [formGroup]="joinGameForm">
+  <div class="form-group mb-3">
+    <label for="username" style="font-size: 1.5rem">Username</label>
+    <input type="text" class="form-control" formControlName="username" id="username">
+  </div>
+  <div class="form-group">
+    <label for="game-code" style="font-size: 1.5rem">Insert the game code to join!</label>
+    <div class="form-group">
+      <input class="form-control w-100" id="game-code" formControlName="gameCode">
+    </div>
+  </div>
+  <hr />
+  <div class="d-flex justify-content-end">
+    <button type="submit" [disabled]="joinGameForm.invalid" class="btn btn-sm btn-light btn-submit">
+      Join Game
+    </button>
+  </div>
+  <hr />
+  <div class="d-flex justify-content-center my-3">
+    Or
+  </div>
+  <div class="form-group">
+    <div class="d-flex justify-content-between">
+      <span style="font-size: 1.5rem">Join a Public Game!</span>
+      <span style="font-size: 1.5rem; cursor: pointer"><i class="fas fa-ticket-alt"></i></span>
+    </div>
+    <ng-container *ngIf="lobby.length === 0">
+      <p>No public games available :(</p>
+    </ng-container>
+    <ul *ngIf="lobby.length" class="list-group">
+      <li *ngFor="let room of lobby" class="list-group-item">
+        <div class="d-flex justify-content-between">
+          <span>{{ room.playerName }}</span>
+          <i class="fas fa-ticket" (click)="loadLobby()"></i>
+        </div>
+      </li>
+    </ul>
+  </div>
+</form>
