@@ -1,17 +1,6 @@
-.unselected {
-  background-color: #f3f5ef;
-  color: #373b47;
-  width: 50%;
-  cursor: pointer;
-  padding: 5px;
-}
-
 .selected {
-  background-color: #f6c962;
-  color: #373b47;
-  width: 50%;
-  cursor: pointer;
-  padding: 5px;
+  background-color: #f6c962 !important;
+  color: #373b47 !important;
 }
 
 .new-game {
@@ -19,6 +8,11 @@
   border-top-left-radius: 5px;
   text-align: center;
   font-weight: bold;
+  background-color: #f3f5ef;
+  color: #373b47;
+  width: 50%;
+  padding: 5px;
+  text-decoration: none;
 }
 
 .join-game {
@@ -26,6 +20,11 @@
   border-top-right-radius: 5px;
   text-align: center;
   font-weight: bold;
+  background-color: #f3f5ef;
+  color: #373b47;
+  width: 50%;
+  padding: 5px;
+  text-decoration: none;
 }
 
 .room-code {
