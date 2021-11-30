@@ -2,6 +2,9 @@
   <div class="form-group mb-3">
     <label for="username" style="font-size: 1.5rem">Username</label>
     <input type="text" class="form-control" formControlName="username" id="username">
+    <small *ngIf="newGameForm.get('username')?.invalid">
+      Username is required and must be long at least 4 characters
+    </small>
   </div>
   <div class="form-check" style="margin-bottom: .5rem;">
     <input type="checkbox" formControlName="public" id="public" class="form-check-input"/>

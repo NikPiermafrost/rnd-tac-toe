@@ -36,7 +36,7 @@ export class JoinGameComponent implements OnDestroy {
   loadLobby(): void {
     this.lobbySubscription = this.lobbySrv.getLobby().subscribe((res) => {
       this.lobby = res;
-    })
+    });
   }
 
   initializeForm(): void {
@@ -58,12 +58,19 @@ export class JoinGameComponent implements OnDestroy {
   }
 
   onJoinPublic(gameCode: string): void {
-    this.gameExistsSubscription = this.lobbySrv.getRoomExistence(gameCode).subscribe((res: boolean) => {
-      this.gameDoesNotExists = !res;
-      if (res) {
-        this.router.navigate(['game', gameCode]);
-      }
-    })
+    if (!this.joinGameForm.get('username')?.invalid) {
+      this.gameExistsSubscription = this.lobbySrv.getRoomExistence(gameCode).subscribe((res: boolean) => {
+        this.gameDoesNotExists = !res;
+        if (res) {
+          this.gameHelperSrv.setCurrentUsername(this.joinGameForm.get('username')?.value);
+          this.gameHelperSrv.setRandomnessValue(this.joinGameForm.get('username')?.value);
+          this.gameHelperSrv.setGameHasStarted(false);
+          this.router.navigate(['/game', gameCode]);
+        } else {
+          this.loadLobby();
+        }
+      });
+    }
   }
 
   ngOnDestroy(): void {
