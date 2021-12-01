@@ -5,15 +5,14 @@ using RndTacToe.Server.Hubs;
 using Microsoft.EntityFrameworkCore;
 using RndTacToe.Lobby.Core;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
-using System.Net;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.WebHost.ConfigureKestrel((context, options) =>
+builder.WebHost.ConfigureKestrel((options) =>
 {
-    options.Listen(IPAddress.Any, 5000, listenOptions =>
+    options.ConfigureEndpointDefaults(opt =>
     {
-        listenOptions.Protocols = HttpProtocols.Http1AndHttp2;
+        opt.Protocols = HttpProtocols.Http1AndHttp2;
     });
 });
 
