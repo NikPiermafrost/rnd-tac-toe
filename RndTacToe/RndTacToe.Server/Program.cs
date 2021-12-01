@@ -4,8 +4,18 @@ using RndTacToe.Lobby.DataAccess;
 using RndTacToe.Server.Hubs;
 using Microsoft.EntityFrameworkCore;
 using RndTacToe.Lobby.Core;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
+using System.Net;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.WebHost.ConfigureKestrel((context, options) =>
+{
+    options.Listen(IPAddress.Any, 5000, listenOptions =>
+    {
+        listenOptions.Protocols = HttpProtocols.Http1AndHttp2;
+    });
+});
 
 builder.Services.AddCors(options => options.AddPolicy("CorsPolicy", o =>
     o.AllowAnyHeader()
