@@ -8,14 +8,6 @@ using Microsoft.AspNetCore.Server.Kestrel.Core;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.WebHost.ConfigureKestrel((options) =>
-{
-    options.ConfigureEndpointDefaults(opt =>
-    {
-        opt.Protocols = HttpProtocols.Http2;
-    });
-});
-
 builder.Services.AddCors(options => options.AddPolicy("CorsPolicy", o =>
     o.AllowAnyHeader()
     .AllowAnyMethod()
