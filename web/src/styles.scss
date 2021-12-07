@@ -1,35 +1,38 @@
 /* You can add global styles to this file, and also import other style files */
-@import "node_modules/bootstrap/scss/bootstrap";
-
-html, body {
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  background-color: #373b47;
-  color: #f6c962;
-}
-
-.main-index-container {
-  padding-top: 8vh;
-}
-
-.validation-message {
-  color: #b99e9a;
-}
-
-.anchor-custom {
-  color: #f6c962 !important;
-  cursor: pointer;
-  text-decoration: underline !important;
-  margin-bottom: 1.5%;
-  font-size: 1.5rem;
-}
-
-.anchor-custom:hover {
-  color: #f6c962 !important;
-  cursor: pointer;
-  text-decoration: underline !important;
-}
-
-.btn-submit {
-  font-weight: bold;
-  background-color: #f3f5ef;
-}
+//@import "node_modules/bootstrap/scss/bootstrap";
+//
+//html, body {
+//  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+//  background-color: #373b47;
+//  color: #f6c962;
+//}
+//
+//.main-index-container {
+//  padding-top: 8vh;
+//}
+//
+//.validation-message {
+//  color: #b99e9a;
+//}
+//
+//.anchor-custom {
+//  color: #f6c962 !important;
+//  cursor: pointer;
+//  text-decoration: underline !important;
+//  margin-bottom: 1.5%;
+//  font-size: 1.5rem;
+//}
+//
+//.anchor-custom:hover {
+//  color: #f6c962 !important;
+//  cursor: pointer;
+//  text-decoration: underline !important;
+//}
+//
+//.btn-submit {
+//  font-weight: bold;
+//  background-color: #f3f5ef;
+//}
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
