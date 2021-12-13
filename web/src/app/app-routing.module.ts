@@ -1,8 +1,6 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { IndexComponent } from './pages/index/index.component';
-import { NewGameComponent } from './pages/index/components/new-game/new-game.component';
-import { JoinGameComponent } from './pages/index/components/join-game/join-game.component';
 
 const routes: Routes = [
   {
@@ -16,11 +14,11 @@ const routes: Routes = [
   },
   {
     path: 'new-game',
-    component: NewGameComponent
+    loadChildren: () => import('./pages/new-game/new-game.module').then(m => m.NewGameModule)
   },
   {
     path: 'join-game',
-    component: JoinGameComponent
+    loadChildren: () => import('./pages/join-game/join-game.module').then(m => m.JoinGameModule)
   },
   {
     path: 'game',
