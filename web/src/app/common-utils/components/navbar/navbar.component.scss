@@ -1,0 +1,15 @@
+.menu-item {
+  @apply rounded-lg border-2 border-blue mb-4 px-3 py-2 hover:border-yellow hover:border-2 cursor-pointer
+}
+
+.menu-item.selected {
+  @apply border-yellow border-2 bg-blue
+}
+
+.menu-item-mobile {
+  @apply rounded-lg border-2 border-blue text-xl px-3 py-2 cursor-pointer
+}
+
+.menu-item-mobile.selected {
+  @apply border-yellow border-2 bg-blue
+}

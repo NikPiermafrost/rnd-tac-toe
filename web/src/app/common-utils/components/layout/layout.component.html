@@ -1,22 +1,36 @@
-<main class="container-fluid">
-  <header>
-    <div class="d-flex justify-content-center pt-3">
-      <h1 class="main-title" (click)="goToHome()">
-        Rnd Tac Toe
-      </h1>
-    </div>
-    <div class="d-flex justify-content-center text-center">
-      <h2 class="main-subtitle" *ngIf="motd">
-        <span class="main-subtitle-text">
-          {{ motd }}
-        </span>
-      </h2>
-    </div>
-  </header>
-  <hr />
-  <section id="body">
-    <ng-content></ng-content>
-  </section>
-  <hr />
-  <app-footer></app-footer>
+<!--<main class="container-fluid">-->
+<!--  <header>-->
+<!--    <div class="d-flex justify-content-center pt-3">-->
+<!--      <h1 class="main-title" (click)="goToHome()">-->
+<!--        Rnd Tac Toe-->
+<!--      </h1>-->
+<!--    </div>-->
+<!--    <div class="d-flex justify-content-center text-center">-->
+<!--      <h2 class="main-subtitle" *ngIf="motd">-->
+<!--        <span class="main-subtitle-text">-->
+<!--          {{ motd }}-->
+<!--        </span>-->
+<!--      </h2>-->
+<!--    </div>-->
+<!--  </header>-->
+<!--  <hr />-->
+<!--  <section id="body">-->
+<!--    <ng-content></ng-content>-->
+<!--  </section>-->
+<!--  <hr />-->
+<!--  <app-footer></app-footer>-->
+<!--</main>-->
+<main class="h-screen">
+  <div class="flex lg:justify-start justify-center">
+    <app-navbar></app-navbar>
+    <section id="content" class="w-full">
+      <header class="flex justify-center">
+        <div class="p-4 text-center" (click)="goToHome()">
+          <h1 class="text-5xl mb-1">Rnd Tac Toe</h1>
+          <h2 class="text-3xl main-subtitle-text" *ngIf="motd">{{ motd }}</h2>
+        </div>
+      </header>
+      <app-footer></app-footer>
+    </section>
+  </div>
 </main>

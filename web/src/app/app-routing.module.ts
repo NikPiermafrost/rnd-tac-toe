@@ -7,11 +7,6 @@ import { JoinGameComponent } from './pages/index/components/join-game/join-game.
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'new-game',
-    pathMatch: 'full'
-  },
-  {
-    path: '',
     component: IndexComponent,
     children: [
       {
@@ -34,7 +29,7 @@ const routes: Routes = [
   },
   {
     path: '**',
-    redirectTo: 'new-game'
+    redirectTo: ''
   }
 ];
 
