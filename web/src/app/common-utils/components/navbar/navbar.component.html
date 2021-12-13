@@ -1,25 +1,22 @@
 <nav class="min-w-max h-screen shadow-lg shadow-gray-800 hidden lg:block bg-darkBlue" *ngIf="collapsedObservable$ | async as status">
-  <ul class="p-3">
-    <li routerLinkActive="active" class="menu-item">
-      <a routerLink="/">
-        <i [ngClass]="{ 'mr-1': status === 2 }" class="fas fa-home"></i> {{ status === 1 ? '' : 'Home' }}
-      </a>
-    </li>
-    <li routerLinkActive="active" class="menu-item">
-      <a routerLink="/new-game">
-        <i [ngClass]="{ 'mr-1': status === 2 }" class="fas fa-plus-circle"></i> {{ status === 1 ? '' : 'New Game' }}
-      </a>
-    </li>
-    <li routerLinkActive="active" class="menu-item">
-      <a routerLink="/join-game">
-        <i [ngClass]="{ 'mr-1': status === 2 }" class="fas fa-play-circle"></i> {{ status === 1 ? '' : 'Join Game' }}
-      </a>
-    </li>
+  <div class="p-3" [ngClass]="{ 'w-40': status === 2 }">
+    <a class="menu-item" routerLinkActive="selected" routerLink="/home">
+      <i [ngClass]="{ 'mr-1': status === 2 }" class="fas fa-home"></i> {{ status === 1 ? '' : 'Home' }}
+    </a>
+    <a class="menu-item" routerLinkActive="selected" routerLink="/new-game">
+      <i [ngClass]="{ 'mr-1': status === 2 }" class="fas fa-plus-circle"></i> {{ status === 1 ? '' : 'New Game' }}
+    </a>
+    <a class="menu-item" routerLinkActive="selected" routerLink="/join-game">
+      <i [ngClass]="{ 'mr-1': status === 2 }" class="fas fa-play-circle"></i> {{ status === 1 ? '' : 'Join Game' }}
+    </a>
 <!--    <a class="menu-item">-->
 <!--      <i class="fas fa-cog mr-1"></i> Settings-->
 <!--    </a>-->
-  </ul>
-  <div class="px-3 py-2 fixed bg-blue border-2-darkBlue rounded" (click)="toggleMenu()">
+</div>
+  <div [ngClass]="{ 
+    'left-32': status === 2,
+    'left-10': status === 1 
+  }" class="px-3 py-2 fixed bg-blue border-2 border-darkBlue bottom-6 rounded text-xl cursor-pointer" (click)="toggleMenu()">
     <i class="fas" [ngClass]="{
       'fa-angle-double-left': status === 2,
       'fa-angle-double-right': status === 1
@@ -27,13 +24,13 @@
   </div>
 </nav>
 <nav class="lg:hidden flex justify-between fixed bottom-0 w-screen border-t-yellow border-t-2 p-3 bg-darkBlue">
-  <a routerLink="/" routerLinkActive="active" class="menu-item-mobile">
+  <a routerLink="/" routerLinkActive="selected" class="menu-item-mobile">
     <i class="fas fa-home"></i>
   </a>
-  <a routerLink="/new-game" routerLinkActive="active" class="menu-item-mobile">
+  <a routerLink="/new-game" routerLinkActive="selected" class="menu-item-mobile">
     <i class="fas fa-plus-circle"></i>
   </a>
-  <a routerLink="/join-game" routerLinkActive="active" class="menu-item-mobile">
+  <a routerLink="/join-game" routerLinkActive="selected" class="menu-item-mobile">
     <i class="fas fa-play-circle"></i>
   </a>
 <!--  <div class="menu-item-mobile">-->

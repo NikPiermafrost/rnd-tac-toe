@@ -1,5 +1,5 @@
 .menu-item {
-  @apply rounded-lg border-2 border-blue mb-4 px-3 py-2 hover:border-yellow hover:border-2 cursor-pointer
+  @apply rounded-lg border-2 border-blue mb-4 px-3 py-2 hover:border-yellow hover:border-2 cursor-pointer block
 }
 
 .menu-item.selected {
