@@ -4,6 +4,7 @@ import { LayoutComponent } from './components/layout/layout.component';
 import { FooterComponent } from './components/footer/footer.component';
 import {RouterModule} from '@angular/router';
 import { NavbarComponent } from './components/navbar/navbar.component';
+import { UiService } from '../services/ui.service';
 
 
 
@@ -19,6 +20,9 @@ import { NavbarComponent } from './components/navbar/navbar.component';
   ],
   exports: [
     LayoutComponent
+  ],
+  providers: [
+    UiService
   ]
 })
 export class CommonUtilsModule { }
