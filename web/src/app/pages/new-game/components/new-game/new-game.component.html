@@ -1,32 +1,31 @@
-<div class="flex justify-center p-4">
-  <form (submit)="onSubmit()" [formGroup]="newGameForm" class="container-sm lg:container">
-    <div class="mb-4 p-4">
-      <label for="username" class="text-2xl block">Username</label>
-      <input type="text"
-        class="rounded bg-darkBlue text-yellow px-3 py-2 w-full focus:outline-none focus:border-yellow focus:border-2 focus:shadow-outline"
-        formControlName="username" id="username">
-      <small *ngIf="newGameForm.get('username')?.invalid" class="block">
-        Username is required and must be long at least 4 characters
-      </small>
-    </div>
-    <div class="form-check mb-4 p-4">
-      <input type="checkbox" formControlName="public" id="public" />
-      <label class="form-check-label mr-1" for="public">
-        Public
-      </label>
-    </div>
-    <div class="p-4 mb-4">
-      <span class="text-2xl block">New Game</span>
-      <button type="button" class="button-custom w-full" (click)="copyGameCodeToClipBoard()" *ngIf="randomGameCode.length">
-        Copy room code
+<form (submit)="onSubmit()" [formGroup]="newGameForm" class="container lg:w-2/3 mx-auto">
+  <div class="p-4">
+    <label for="username" class="text-2xl block">Username</label>
+    <input type="text"
+      class="w-full rounded bg-darkBlue text-yellow px-3 py-2 focus:outline-none focus:border-yellow focus:border-2"
+      formControlName="username" id="username">
+    <small *ngIf="newGameForm.get('username')?.invalid">
+      Username lenght must be bewteen 4 and 16 characters
+    </small>
+  </div>
+  <div class="form-check p-4">
+    <input type="checkbox" formControlName="public" id="public" />
+    <label class="form-check-label mr-1" for="public">
+      Public
+    </label>
+  </div>
+  <div class="p-4">
+    <span class="text-2xl block">New Game</span>
+    <button type="button" class="button-custom w-full" (click)="copyGameCodeToClipBoard()"
+      *ngIf="randomGameCode.length">
+      Copy room code
+    </button>
+  </div>
+  <div class="flex p-4" style="justify-content: end;">
+    <div>
+      <button type="submit" [disabled]="newGameForm.invalid" class="button-custom min-w-max cursor-none">
+        Start Game
       </button>
     </div>
-    <div class="flex p-4" style="justify-content: end;">
-      <div>
-        <button type="submit" [disabled]="newGameForm.invalid" class="button-custom min-w-max">
-          Start Game
-        </button>
-      </div>
-    </div>
-  </form>
-</div>
+  </div>
+</form>

@@ -46,7 +46,7 @@ export class JoinGameComponent implements OnDestroy {
         Validators.minLength(4),
         Validators.maxLength(16)
       ]),
-      gameCode: new FormControl('', [Validators.minLength(1)])
+      gameCode: new FormControl('')
     })
   }
 

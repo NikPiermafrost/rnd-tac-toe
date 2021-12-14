@@ -21,6 +21,7 @@
     "@angular/router": "~13.0.0",
     "@fortawesome/fontawesome-free": "^5.15.4",
     "@microsoft/signalr": "^6.0.0",
+    "@tailwindcss/forms": "^0.4.0",
     "rxjs": "~7.4.0",
     "tslib": "^2.3.0",
     "uuid": "^8.3.2",
@@ -48,7 +49,7 @@
     "karma-coverage": "~2.0.3",
     "karma-jasmine": "~4.0.0",
     "karma-jasmine-html-reporter": "~1.7.0",
-    "tailwindcss": "^2.2.19",
+    "tailwindcss": "^3.0.2",
     "typescript": "~4.4.3"
   }
 }

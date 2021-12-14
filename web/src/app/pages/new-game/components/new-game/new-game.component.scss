@@ -1,3 +1,4 @@
 .button-custom {
-  @apply rounded bg-darkBlue text-yellow px-3 py-2 cursor-pointer hover:bg-blue border-2 border-darkBlue
+  @apply rounded bg-darkBlue text-yellow px-3 py-2 cursor-pointer hover:bg-blue border-2 border-darkBlue;
+  @apply disabled:hover:bg-black disabled:hover:border-black disabled:bg-black disabled:cursor-default
 }
