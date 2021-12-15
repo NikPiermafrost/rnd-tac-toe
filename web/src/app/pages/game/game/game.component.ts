@@ -76,7 +76,6 @@ export class GameComponent implements OnInit, OnDestroy {
     });
 
     this.receiveOpponentSubscription = this.gameHubSrv.receivedOpponent$.subscribe((res: PlayerModel) => {
-      console.log(`Opponent received: ${res.username}`);
       if (this.playerName !== res.username && (!this.opponentName && !this.opponentName.length)) {
         this.opponentName = res.username;
         this.gameHubSrv.sendInitialCall(this.gameId, this.playerName, this.currentRandomness);
@@ -122,10 +121,11 @@ export class GameComponent implements OnInit, OnDestroy {
 
   private willBeTheRightMove(requestedCell: number): number {
     const willItBe = Math.floor(Math.random() * 101) + 1;
-    console.log(this.currentRandomness, willItBe);
+    
     if (this.currentRandomness === 0 || willItBe >= this.currentRandomness) {
       return requestedCell;
     }
+
     return this.isNotTheRightMove(requestedCell);
   }
 
@@ -141,7 +141,7 @@ export class GameComponent implements OnInit, OnDestroy {
       potentialResponse = Math.floor(Math.random() * 9);
       const cellRef = this.gameGrid[potentialResponse].storedChar;
       isItEmpty = cellRef.length === 0 && potentialResponse !== requestedCell;
-      console.log(potentialResponse, cellRef, isItEmpty);
+      
     }
     return potentialResponse;
   }

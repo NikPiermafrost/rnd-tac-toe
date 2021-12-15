@@ -10,7 +10,8 @@ module.exports = {
         yellow: '#F6C962',
         blue: '#373B47',
         darkBlue: '#21242b',
-        white: '#F3F5EF'
+        white: '#F3F5EF',
+        pink: '#b99e9a'
       }
     }
   },

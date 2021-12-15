@@ -1,21 +1,14 @@
 .back-to-home, .rematch {
-  border-radius: 5px;
-  background-color: #f3f5ef;
-  text-align: center;
-  font-weight: bold;
-  cursor: pointer;
-  padding: 5px;
-  width: 100%;
-  color: #373b47;
+  @apply rounded bg-darkBlue text-yellow px-3 py-2 cursor-pointer hover:bg-blue border-2 border-darkBlue;
+  @apply disabled:hover:bg-black disabled:hover:border-black disabled:bg-black disabled:cursor-default
 }
 
 .grid-container {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-}
-
-.grid-container div {
-  margin: 0 5px 5px 0;
+  div {
+    margin: 0 5px 5px 0;
+  }
 }
 
 .grid-item {

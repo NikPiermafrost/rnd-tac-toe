@@ -1,26 +1,28 @@
-<div class="container" style="max-width: 500px;">
-  <div class="w-100">
-    <div class="back-to-home" (click)="backToHome()">
+<div class="container lg:w-1/3 mx-auto">
+  <div class="w-full p-4">
+    <button type="button" class="back-to-home w-full" (click)="backToHome()">
       Back to Home
-    </div>
+    </button>
   </div>
-  <div class="d-flex justify-content-center mt-3">
+  <div class="flex justify-center mt-4">
     <h4>{{ opponentName.length ? ('You\'re against ' + opponentName) : 'Waiting for opponent to connect...' }}</h4>
   </div>
-  <div class="d-flex justify-content-center mt-3">
+  <div class="flex justify-center mt-4">
     <h4>{{ isYourTurn ? playerName : opponentName }} Turn!</h4>
   </div>
-  <div class="d-flex justify-content-center mt-3" *ngIf="isConnected">
+  <div class="flex justify-center mt-4" *ngIf="isConnected">
     <div class="grid-container">
       <div class="grid-item" *ngFor="let item of gameGrid" (click)="move(item.cellPosition)">
         {{ item?.storedChar }}
       </div>
     </div>
   </div>
-  <div class="w-100 mt-3" *ngIf="hasSomeoneWon && !opponentHasDisconnected" (click)="rematch()">
-    <div class="rematch">{{ isYourTurn ? 'Rematch!' : 'Waiting for opponent to accept...' }}</div>
+  <div class="w-full mt-4 p-4" *ngIf="hasSomeoneWon && !opponentHasDisconnected">
+    <button type="button" class="rematch" (click)="rematch()">
+      {{ isYourTurn ? 'Rematch!' : 'Waiting for opponent to accept...' }}
+    </button>
   </div>
-  <div class="w-100 mt-3 text-center" *ngIf="opponentHasDisconnected">
+  <div class="w-full my-4 text-center p-4" *ngIf="opponentHasDisconnected">
     Your opponent has disconnected, redirecting to home in a second...
   </div>
 </div>
