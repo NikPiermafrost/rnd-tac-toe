@@ -59,6 +59,7 @@ export class GameComponent implements OnInit, OnDestroy {
 
     this.restartMatchSubscription = this.gameHubSrv.restartMatch$.subscribe(() => {
       this.initializeGrid();
+      this.hasSomeoneWon = false;
       const hasStarted: boolean = this.gameHelperSrv.getHasStartedStatus();
       this.isYourTurn = !hasStarted;
       this.gameHelperSrv.setGameHasStarted(!hasStarted);
@@ -110,12 +111,12 @@ export class GameComponent implements OnInit, OnDestroy {
   }
 
   move(position: number): void {
-    if (this.isYourTurn && !this.hasSomeoneWon) {
-      const actualMove: number = this.willBeTheRightMove(position);
-      const requestedCell = this.gameGrid.find((cell) => cell.cellPosition === actualMove);
-      if (requestedCell?.storedChar === '') {
-        this.gameHubSrv.move(this.gameId, requestedCell.cellPosition, this.playerSymbol);
-      }
+    if (!this.isYourTurn) return;
+    if (this.hasSomeoneWon) return;
+    const actualMove: number = this.willBeTheRightMove(position);
+    const requestedCell = this.gameGrid.find((cell) => cell.cellPosition === actualMove);
+    if (requestedCell?.storedChar === '') {
+      this.gameHubSrv.move(this.gameId, requestedCell.cellPosition, this.playerSymbol);
     }
   }
 
