@@ -18,7 +18,7 @@
     </div>
   </div>
   <div class="w-full mt-4 p-4" *ngIf="hasSomeoneWon && !opponentHasDisconnected">
-    <button type="button" class="rematch" (click)="rematch()">
+    <button type="button" class="rematch w-full" (click)="rematch()">
       {{ isYourTurn ? 'Rematch!' : 'Waiting for opponent to accept...' }}
     </button>
   </div>

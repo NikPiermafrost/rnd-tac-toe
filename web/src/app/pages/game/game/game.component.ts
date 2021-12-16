@@ -110,7 +110,7 @@ export class GameComponent implements OnInit, OnDestroy {
   }
 
   move(position: number): void {
-    if (this.isYourTurn || !this.hasSomeoneWon) {
+    if (this.isYourTurn && !this.hasSomeoneWon) {
       const actualMove: number = this.willBeTheRightMove(position);
       const requestedCell = this.gameGrid.find((cell) => cell.cellPosition === actualMove);
       if (requestedCell?.storedChar === '') {
@@ -147,11 +147,13 @@ export class GameComponent implements OnInit, OnDestroy {
   }
 
   private checkIfDraw(): boolean {
-    return !this.gameGrid.some(({storedChar}) => storedChar.length === 0);
+    return !this.gameGrid.some(({ storedChar }) => storedChar.length === 0);
   }
 
   rematch(): void {
-    this.gameHubSrv.rematch(this.gameId);
+    if (this.isYourTurn) {
+      this.gameHubSrv.rematch(this.gameId);
+    }
   }
 
   ngOnDestroy(): void {
