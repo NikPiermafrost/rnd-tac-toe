@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/aspnet:6.0-bullseye-slim-amd64 as base
+FROM mcr.microsoft.com/dotnet/aspnet:6.0-alpine as base
 
 WORKDIR /app
 EXPOSE 80
@@ -9,11 +9,11 @@ FROM node:16-alpine as build-angular
 RUN mkdir /angular-build
 WORKDIR /angular-build
 COPY ./web .
-RUN npm i
+RUN npm i --legacy-peer-deps
 RUN npm i -g @angular/cli@13
 RUN ng build --prod
 
-FROM mcr.microsoft.com/dotnet/sdk:6.0-bullseye-slim-amd64 AS build
+FROM mcr.microsoft.com/dotnet/sdk:6.0-alpine AS build
 
 WORKDIR /src
 COPY ["RndTacToe/RndTacToe.Server/RndTacToe.Server.csproj", "server/RndTacToe.Server/"]
