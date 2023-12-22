@@ -2,7 +2,7 @@ import express from 'express';
 import { createServer } from 'node:http';
 import createSocketServer from '../utils/socket';
 import { AppRequest } from '../utils/custom-types';
-import lobbyRouter from '../routes/lobby';
+import lobbyRouter from '../routes/lobby.router';
 import helmet from 'helmet';
 
 const app = express();
@@ -29,7 +29,7 @@ io.on('connection', (socket) => {
   });
 });
 
-app.use('/api/lobby', lobbyRouter);
+app.use('/lobby', lobbyRouter);
 
 app.get('/', async (req, res) => {
   res.sendFile(__dirname + '/index.html');

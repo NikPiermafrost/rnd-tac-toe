@@ -1,21 +1,16 @@
 import express from 'express';
 import { validateNewRoom, validateRoomExists } from '../utils/validators';
+import lobbyController from '../controllers/lobby.controller';
 
 const router = express.Router();
 
 router.route('/get-lobby')
-  .get(async (req, res) => {
-    res.status(200).json([]);
-  });
+  .get(lobbyController.getLobby);
 
 router.route('/get-lobby/:id')
-  .get(validateRoomExists, async (req, res) => {
-    res.status(200).json(true);
-  });
+  .get(validateRoomExists, lobbyController.getLobbyDetail);
 
 router.route('/create-game')
-  .post(validateNewRoom, async (req, res) => {
-    res.status(200).json(true);
-  });
+  .post(validateNewRoom, lobbyController.createGame);
 
 export default router;

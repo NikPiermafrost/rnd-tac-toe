@@ -23,6 +23,7 @@ const validateRequestParameters = (req: Request, res: Response, next: NextFuncti
   } catch (error) {
     return res.status(400).json({
       status: 'failure',
+      
       message: (error as Error)?.message
     } as BaseResponse<null>);
   }
