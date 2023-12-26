@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { GameHelperService } from '../../../../services/game-helper.service';
 import { LobbyService } from '../../../../services/lobby.service';
 import { Observable, Subscription } from 'rxjs';
@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
 })
 export class JoinGameComponent implements OnDestroy {
 
-  joinGameForm!: FormGroup;
+  joinGameForm!: UntypedFormGroup;
   lobby: RoomModel[] = [];
   formValuesSubscription?: Subscription;
   checkGameExistenceSubscription?: Subscription;
@@ -21,7 +21,7 @@ export class JoinGameComponent implements OnDestroy {
   gameExistsSubscription?: Subscription;
   gameDoesNotExists = false;
 
-  constructor(private formBuilder: FormBuilder,
+  constructor(private formBuilder: UntypedFormBuilder,
               private gameHelperSrv: GameHelperService,
               private lobbySrv: LobbyService,
               private router: Router) {
@@ -41,12 +41,12 @@ export class JoinGameComponent implements OnDestroy {
 
   initializeForm(): void {
     this.joinGameForm = this.formBuilder.group({
-      username: new FormControl(this.gameHelperSrv.getCurrentUsername() || '', [
+      username: new UntypedFormControl(this.gameHelperSrv.getCurrentUsername() || '', [
         Validators.required,
         Validators.minLength(4),
         Validators.maxLength(16)
       ]),
-      gameCode: new FormControl('')
+      gameCode: new UntypedFormControl('')
     })
   }
 

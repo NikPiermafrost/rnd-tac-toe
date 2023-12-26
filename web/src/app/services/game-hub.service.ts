@@ -1,9 +1,9 @@
 import {Injectable} from '@angular/core';
 import {Subject} from 'rxjs';
-import {HttpTransportType, HubConnection, HubConnectionBuilder} from '@microsoft/signalr';
 import {environment} from '../../environments/environment';
 import {PlayerModel} from '../models/player.model';
 import {MoveModel} from '../models/move.model';
+import { Socket, io } from 'socket.io-client'; 
 
 @Injectable({
   providedIn: 'root'
@@ -15,63 +15,71 @@ export class GameHubService {
   restartMatch$ = new Subject<void>();
   hasExited$ = new Subject<string>();
   connectionState$ = new Subject<boolean>();
-
-  connection : HubConnection;
+  io : Socket;
 
   constructor() {
-    this.connection = new HubConnectionBuilder()
-      .withUrl(`${environment.backendUrl}/game-hub`, {
-        skipNegotiation: true,
-        transport: HttpTransportType.WebSockets
-      })
-      .build();
+
+    this.io = io(environment.backendUrl, {
+      multiplex: true,
+      transports: ['websocket']
+    });
   }
 
   connect(): void {
 
-    this.connection.on('ReceiveOpponent', (username: string, randomChance: number) => {
+    this.io.on('ReceiveOpponent', (username: string, randomChance: number) => {
       this.receivedOpponent$.next({ randomChance, username });
     });
 
-    this.connection.on('Move', (position: number, symbol: string) => {
+    this.io.on('Move', (position: number, symbol: string) => {
       this.move$.next({ position, symbol });
     });
 
-    this.connection.on('RestartMatch', () => {
+    this.io.on('RestartMatch', () => {
       this.restartMatch$.next();
     });
 
-    this.connection.on('HasExited', (message: string) => {
+    this.io.on('HasExited', (message: string) => {
       this.hasExited$.next(message);
     });
 
-    this.connection.start()
-      .then(() => {
-        this.connectionState$.next(true);
-      })
-      .catch((error) => {
-        console.log(error);
-        this.connectionState$.next(false);
-      });
+    this.io.on('connect', () => {
+      this.connectionState$.next(true);
+    });
+
+    this.io.on('disconnect', () => {
+      this.connectionState$.next(false);
+    });
+
+    this.io.connect();
+
+    // this.io.start()
+    //   .then(() => {
+    //     this.connectionState$.next(true);
+    //   })
+    //   .catch((error: Error) => {
+    //     console.log(error);
+    //     this.connectionState$.next(false);
+    //   });
   }
 
   rematch(gameId: string): void {
-    this.connection.send('Rematch', gameId);
+    this.io.send('Rematch', gameId);
   }
 
   sendInitialCall(gameId: string, currentPlayerName: string, currentRandomness: number): void {
-    this.connection.send('OnUserConnect', gameId, currentPlayerName, currentRandomness);
+    this.io.send('OnUserConnect', gameId, currentPlayerName, currentRandomness);
   }
 
   move(gameId: string, cellPosition: number, symbol: string): void {
-    this.connection.send('MoveSelected', gameId, cellPosition, symbol);
+    this.io.send('MoveSelected', gameId, cellPosition, symbol);
   }
 
   removeFromGroup(gameId: string): void {
-    this.connection.send('RemoveFromGroup', gameId);
+    this.io.send('RemoveFromGroup', gameId);
   }
 
   disconnect(): void {
-    this.connection.stop();
+    this.io.disconnect();
   }
 }

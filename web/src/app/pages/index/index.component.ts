@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators} from '@angular/forms';
 import { v4 as uuid } from 'uuid';
 import { GameHelperService } from '../../services/game-helper.service';
 import { Router } from '@angular/router';
@@ -14,12 +14,12 @@ import { RoomResponseModel } from '../../models/room.model';
 })
 export class IndexComponent implements OnInit, OnDestroy {
 
-  startForm!: FormGroup;
+  startForm!: UntypedFormGroup;
   isJoin: boolean = false;
   randomGameCode: string = '';
   newGameSubscription?: Subscription;
 
-  constructor(private formBuilder: FormBuilder,
+  constructor(private formBuilder: UntypedFormBuilder,
               private gameHelperSrv: GameHelperService,
               private router: Router,
               private lobbySrv: LobbyService) { }
@@ -28,12 +28,12 @@ export class IndexComponent implements OnInit, OnDestroy {
     this.initializeGameString();
 
     this.startForm = this.formBuilder.group({
-      username: new FormControl('', [
+      username: new UntypedFormControl('', [
         Validators.required,
         Validators.minLength(4),
         Validators.maxLength(16)
       ]),
-      public: new FormControl(false)
+      public: new UntypedFormControl(false)
     })
   }
 
@@ -47,14 +47,14 @@ export class IndexComponent implements OnInit, OnDestroy {
       this.startForm.removeControl('gameCode');
     }
     if (!this.startForm.controls['public']) {
-      this.startForm.addControl('public', new FormControl(false));
+      this.startForm.addControl('public', new UntypedFormControl(false));
     }
   }
 
   onJoinClick(): void {
     this.isJoin = true;
     if (!this.startForm.controls['gameCode']) {
-      this.startForm.addControl('gameCode', new FormControl(''))
+      this.startForm.addControl('gameCode', new UntypedFormControl(''))
     }
     if (this.startForm.controls['public']) {
       this.startForm.removeControl('public');

@@ -4,10 +4,20 @@ import createSocketServer from '../utils/socket';
 import { AppRequest } from '../utils/custom-types';
 import lobbyRouter from '../routes/lobby.router';
 import helmet from 'helmet';
+import { handleGameMessages } from '../services/game.service';
+import cors from 'cors';
 
 const app = express();
+
 const httpServer = createServer(app);
+
+app.use(cors({
+  origin: '*'
+}));
+
 const io = createSocketServer(httpServer);
+
+handleGameMessages(io);
 
 app.use(helmet());
 
@@ -18,23 +28,6 @@ app.use((req, res, next) => {
   return next();
 });
 
-io.on('connection', (socket) => {
-  io.emit('chat response', 'Daje roma daje');
-  socket.on('disconnect', () => {
-    console.log('user disconnected');
-    socket.disconnect();
-  });
-  socket.on('chat message', (msg) => {
-    io.emit('chat response', msg);
-  });
-});
-
 app.use('/lobby', lobbyRouter);
-
-app.get('/', async (req, res) => {
-  res.sendFile(__dirname + '/index.html');
-});
-
-
 
 export default httpServer;

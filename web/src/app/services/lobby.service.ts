@@ -9,19 +9,19 @@ import { RoomModel, RoomResponseModel } from '../models/room.model';
 })
 export class LobbyService {
 
-  private readonly baseRoute: string = `${environment.backendUrl}/api/lobby`
+  private readonly baseRoute: string = `${environment.backendUrl}/lobby`
 
   constructor(private http: HttpClient) { }
 
   getLobby(): Observable<RoomModel[]> {
-    return this.http.get<RoomModel[]>(`${this.baseRoute}/getlobby`);
+    return this.http.get<RoomModel[]>(`${this.baseRoute}/get-lobby`);
   }
 
   getRoomExistence(gameId: string): Observable<boolean> {
-    return this.http.get<boolean>(`${this.baseRoute}/getroomexistence/${gameId}`)
+    return this.http.get<boolean>(`${this.baseRoute}/get-lobby/${gameId}`)
   }
 
   newRoom(newRoom: RoomModel): Observable<RoomResponseModel> {
-    return this.http.post<RoomResponseModel>(`${this.baseRoute}/newgame`, newRoom);
+    return this.http.post<RoomResponseModel>(`${this.baseRoute}/create-game`, newRoom);
   }
 }

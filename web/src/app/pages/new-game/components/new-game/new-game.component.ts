@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { v4 as uuid } from 'uuid';
 import { RoomResponseModel } from '../../../../models/room.model';
 import { Subscription } from 'rxjs';
@@ -14,12 +14,12 @@ import { Router } from '@angular/router';
 })
 export class NewGameComponent implements OnInit, OnDestroy {
 
-  newGameForm!: FormGroup;
+  newGameForm!: UntypedFormGroup;
   randomGameCode: string = '';
   newGameSubscription?: Subscription;
   formSubscription?: Subscription;
 
-  constructor(private formBuilder: FormBuilder,
+  constructor(private formBuilder: UntypedFormBuilder,
               private lobbySrv: LobbyService,
               private gameHelperSrv: GameHelperService,
               private router: Router) {
@@ -36,12 +36,12 @@ export class NewGameComponent implements OnInit, OnDestroy {
 
   initializeForm(): void {
     this.newGameForm = this.formBuilder.group({
-      username: new FormControl(this.gameHelperSrv.getCurrentUsername() || '', [
+      username: new UntypedFormControl(this.gameHelperSrv.getCurrentUsername() || '', [
         Validators.required,
         Validators.minLength(4),
         Validators.maxLength(16)
       ]),
-      public: new FormControl(false)
+      public: new UntypedFormControl(false)
     });
   }
 

@@ -124,9 +124,8 @@
       }
     }
   },
-  "defaultProject": "web",
   "cli": {
-    "defaultCollection": "@angular-eslint/schematics",
-    "packageManager": "pnpm"
+    "packageManager": "pnpm",
+    "analytics": false
   }
 }

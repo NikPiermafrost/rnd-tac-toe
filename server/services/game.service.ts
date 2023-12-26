@@ -5,6 +5,7 @@ import redis from '../utils/redis';
 
 export const handleGameMessages = (io: Server) => {
   io.on('connection', async (socket): Promise<void> => {
+    console.log('a user connected');
     socket.on(GameCommandType.JoinGame, async (data: JoinGame): Promise<void> => {
       socket.join(data.gameId);
 
