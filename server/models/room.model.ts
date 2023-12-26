@@ -1,4 +1,4 @@
-export interface Room {
+export type Room = {
   playerName: string;
   gameId: string;
 }
