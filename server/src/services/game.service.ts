@@ -1,5 +1,4 @@
 import { Server } from 'socket.io';
-import { GameCommandType } from '../models/action.model';
 import { JoinGame as Rematch } from '../models/game.model';
 import { GameState, Move, PlayerInfo, TicTacToeCellModel } from '../models/game-state.model';
 import redis from '../utils/redis';
@@ -15,24 +14,40 @@ const _conditions: number[][] = [
   [2, 4, 6]
 ];
 
+const gameCommandType = {
+  JoinGame: 'join-game',
+  PlayerJoined: 'player-joined',
+  PlayerLeft: 'has-exited',
+  Move: 'move',
+  Error: 'error',
+  Rematch: 'rematch'
+};
+
 export const handleGameMessages = (io: Server) => {
   io.on('connection', async (socket): Promise<void> => {
 
-    socket.on(GameCommandType.JoinGame, async (data: PlayerInfo): Promise<void> => {
+    console.log('a user connected');
+
+    socket.on(gameCommandType.JoinGame, async (data: PlayerInfo): Promise<void> => {
+
+      console.log(data);
 
       const gameState = await initGameState(data.gameId, data);
 
       if (gameState.players.length == 2) {
-        socket.emit(GameCommandType.Error, {
+        socket.emit(gameCommandType.Error, {
           message: 'Room is full'
         });
       }
+
       socket.join(data.gameId);
   
-      socket.to(data.gameId).emit(GameCommandType.PlayerJoined, gameState);
+      socket.to(data.gameId).emit(gameCommandType.PlayerJoined, gameState);
     });
 
-    socket.on(GameCommandType.Rematch, async (data: Rematch): Promise<void> => {
+    socket.on(gameCommandType.Rematch, async (data: Rematch): Promise<void> => {
+
+      console.log(data);
 
       const gameState = await getBoard(data.gameId);
       
@@ -42,16 +57,20 @@ export const handleGameMessages = (io: Server) => {
       gameState.isDraw = false;
       gameState.turn = gameState.players.find((x) => x.userName !== data.whoWon)!.userName;
 
-      socket.to(data.gameId).emit(GameCommandType.Rematch);
+      await updateBoard(gameState);
+
+      console.log(gameState);
+
+      socket.to(data.gameId).emit(gameCommandType.Rematch, gameState);
     });
 
-    socket.on(GameCommandType.Move, async (data: Move): Promise<void> => {  
+    socket.on(gameCommandType.Move, async (data: Move): Promise<void> => {  
       const randomChance = calculateRandomChance(data.userName);
 
       const gameState = await getBoard(data.gameId);
 
       if (gameState.turn !== data.userName) {
-        socket.emit(GameCommandType.Error, {
+        socket.emit(gameCommandType.Error, {
           message: 'It is not your turn'
         });
         return;
@@ -79,20 +98,12 @@ export const handleGameMessages = (io: Server) => {
 
       await updateBoard(gameState);
 
-      socket.to(data.gameId).emit(GameCommandType.Move, gameState);
+      socket.to(data.gameId).emit(gameCommandType.Move, gameState);
     });
 
-    socket.on(GameCommandType.HasExited, async (gameId: string): Promise<void> => {
+    socket.on(gameCommandType.PlayerLeft, async (gameId: string): Promise<void> => {
       await deleteBoard(gameId);
-    });
-    
-    socket.on('disconnecting', () => {
-      const rooms = socket.rooms;
-      rooms.forEach((room) => {
-        socket.to(room).emit(GameCommandType.HasExited, {
-          message: 'Your opponent has left the game'
-        });
-      });
+      socket.leave(gameId);
     });
   });
 };

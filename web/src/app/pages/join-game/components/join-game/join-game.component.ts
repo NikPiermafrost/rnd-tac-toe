@@ -35,7 +35,7 @@ export class JoinGameComponent implements OnDestroy {
 
   loadLobby(): void {
     this.lobbySubscription = this.lobbySrv.getLobby().subscribe((res) => {
-      this.lobby = res;
+      this.lobby = res.data || [];
     });
   }
 

@@ -11,7 +11,7 @@ export const getLobby = async (req: Request, res: Response) => {
       data: lobby
     } as BaseResponse<Room[]>);
   } catch (error) {
-    res.status(500).json({
+    res.status(200).json({
       status: 'failure',
       message: (error as Error)?.message
     } as BaseResponse<null>);
@@ -27,7 +27,7 @@ export const getLobbyDetail = async (req: Request, res: Response) => {
       data: lobbyDetail
     } as BaseResponse<Room>);
   } catch (error) {
-    res.status(500).json({
+    res.status(200).json({
       status: 'failure',
       message: (error as Error)?.message
     } as BaseResponse<null>);
@@ -43,7 +43,8 @@ export const createGame = async (req: Request, res: Response) => {
       data: true
     } as BaseResponse<boolean>);
   } catch (error) {
-    res.status(500).json({
+    console.log(error);
+    res.status(200).json({
       status: 'failure',
       message: (error as Error)?.message
     } as BaseResponse<null>);

@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs';
 import { RoomModel, RoomResponseModel } from '../models/room.model';
+import { BaseResponse } from '../models/common.model';
 
 @Injectable({
   providedIn: 'root'
@@ -13,15 +14,15 @@ export class LobbyService {
 
   constructor(private http: HttpClient) { }
 
-  getLobby(): Observable<RoomModel[]> {
-    return this.http.get<RoomModel[]>(`${this.baseRoute}/get-lobby`);
+  getLobby(): Observable<BaseResponse<RoomModel[]>> {
+    return this.http.get<BaseResponse<RoomModel[]>>(`${this.baseRoute}/get-lobby`);
   }
 
   getRoomExistence(gameId: string): Observable<boolean> {
     return this.http.get<boolean>(`${this.baseRoute}/get-lobby/${gameId}`)
   }
 
-  newRoom(newRoom: RoomModel): Observable<RoomResponseModel> {
-    return this.http.post<RoomResponseModel>(`${this.baseRoute}/create-game`, newRoom);
+  newRoom(newRoom: RoomModel): Observable<BaseResponse<boolean>> {
+    return this.http.post<BaseResponse<boolean>>(`${this.baseRoute}/create-game`, newRoom);
   }
 }

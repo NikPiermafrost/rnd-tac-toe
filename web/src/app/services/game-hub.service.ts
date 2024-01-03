@@ -1,3 +1,4 @@
+import { GameState, Move } from './../models/game-state.model';
 import {Injectable} from '@angular/core';
 import {Subject} from 'rxjs';
 import {environment} from '../../environments/environment';
@@ -15,7 +16,15 @@ export class GameHubService {
   restartMatch$ = new Subject<void>();
   hasExited$ = new Subject<string>();
   connectionState$ = new Subject<boolean>();
-  io : Socket;
+  io: Socket;
+  gameCommandType = {
+    JoinGame: 'join-game',
+    PlayerJoined: 'player-joined',
+    PlayerLeft: 'has-exited',
+    Move: 'move',
+    Error: 'error',
+    Rematch: 'rematch'
+  };
 
   constructor() {
 
@@ -27,15 +36,16 @@ export class GameHubService {
 
   connect(): void {
 
-    this.io.on('ReceiveOpponent', (username: string, randomChance: number) => {
-      this.receivedOpponent$.next({ randomChance, username });
+    this.io.on(this.gameCommandType.PlayerJoined, (gameState: GameState) => {
+      // this.receivedOpponent$.next({ randomChance, username });
+      console.log(gameState);
     });
 
-    this.io.on('Move', (position: number, symbol: string) => {
+    this.io.on(this.gameCommandType.Move, (position: number, symbol: string) => {
       this.move$.next({ position, symbol });
     });
 
-    this.io.on('RestartMatch', () => {
+    this.io.on(this.gameCommandType.Rematch, () => {
       this.restartMatch$.next();
     });
 
@@ -63,20 +73,33 @@ export class GameHubService {
     //   });
   }
 
-  rematch(gameId: string): void {
-    this.io.send('Rematch', gameId);
+  rematch(gameId: string, whoWon: string): void {
+    this.io.send(this.gameCommandType.Rematch, {
+      gameId,
+      whoWon
+    });
   }
 
   sendInitialCall(gameId: string, currentPlayerName: string, currentRandomness: number): void {
-    this.io.send('OnUserConnect', gameId, currentPlayerName, currentRandomness);
+    this.io.send(this.gameCommandType.JoinGame, {
+      gameId,
+      userName: currentPlayerName
+    });
   }
 
-  move(gameId: string, cellPosition: number, symbol: string): void {
-    this.io.send('MoveSelected', gameId, cellPosition, symbol);
+  move(gameId: string, cellPosition: number, cellCharacter: string, userName: string): void {
+    const move: Move = {
+      gameId,
+      cellPosition,
+      cellCharacter,
+      userName
+    }
+
+    this.io.send(this.gameCommandType.Move, move);
   }
 
   removeFromGroup(gameId: string): void {
-    this.io.send('RemoveFromGroup', gameId);
+    this.io.send(this.gameCommandType.PlayerLeft, gameId);
   }
 
   disconnect(): void {

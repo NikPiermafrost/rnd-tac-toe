@@ -6,6 +6,7 @@ import { Subscription } from 'rxjs';
 import { LobbyService } from '../../../../services/lobby.service';
 import { GameHelperService } from '../../../../services/game-helper.service';
 import { Router } from '@angular/router';
+import { BaseResponse } from 'src/app/models/common.model';
 
 @Component({
   selector: 'app-new-game',
@@ -65,7 +66,7 @@ export class NewGameComponent implements OnInit, OnDestroy {
         playerName: this.newGameForm.get('username')?.value,
         gameId: this.randomGameCode
       }).subscribe({
-        next: (res: RoomResponseModel) => this.nextResult(res),
+        next: (res: BaseResponse<boolean>) => this.nextResult(res),
         error: (error: Error) => this.errorResult(error)
       })
     } else {
@@ -78,11 +79,11 @@ export class NewGameComponent implements OnInit, OnDestroy {
     this.formSubscription?.unsubscribe();
   }
 
-  private nextResult(res: RoomResponseModel): void {
-    if (res.isCreated) {
+  private nextResult(res: BaseResponse<boolean>): void {
+    if (res.status === 'success') {
       this.initializeGame();
     } else {
-      window.alert(`Could not create new room, reason: ${res.reason}`);
+      window.alert(`Could not create new room, reason: ${res.message}`);
     }
   }
 

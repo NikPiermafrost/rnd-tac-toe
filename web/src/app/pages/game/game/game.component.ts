@@ -116,7 +116,7 @@ export class GameComponent implements OnInit, OnDestroy {
     const actualMove: number = this.willBeTheRightMove(position);
     const requestedCell = this.gameGrid.find((cell) => cell.cellPosition === actualMove);
     if (requestedCell?.storedChar === '') {
-      this.gameHubSrv.move(this.gameId, requestedCell.cellPosition, this.playerSymbol);
+      this.gameHubSrv.move(this.gameId, requestedCell.cellPosition, this.playerSymbol, this.playerName);
     }
   }
 
@@ -153,7 +153,7 @@ export class GameComponent implements OnInit, OnDestroy {
 
   rematch(): void {
     if (this.isYourTurn) {
-      this.gameHubSrv.rematch(this.gameId);
+      this.gameHubSrv.rematch(this.gameId, 'cambiami dioboe');
     }
   }
 
