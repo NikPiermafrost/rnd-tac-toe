@@ -1,6 +1,6 @@
 export interface JoinGame {
   gameId: string,
-  userName: string
+  whoWon: string
 }
 
 export interface PlayerData {

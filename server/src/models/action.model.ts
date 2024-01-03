@@ -9,5 +9,7 @@ export enum GameCommandType {
   HasExited = 'has-exited',
   Move = 'move',
   Won = 'won',
-  Lost = 'lost'
+  Lost = 'lost',
+  Error = 'error',
+  Rematch = 'rematch'
 }

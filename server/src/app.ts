@@ -1,10 +1,10 @@
 import express from 'express';
 import { createServer } from 'node:http';
-import createSocketServer from '../utils/socket';
-import { AppRequest } from '../utils/custom-types';
-import lobbyRouter from '../routes/lobby.router';
+import createSocketServer from './utils/socket';
+import { AppRequest } from './utils/custom-types';
+import lobbyRouter from './routes/lobby.router';
 import helmet from 'helmet';
-import { handleGameMessages } from '../services/game.service';
+import { handleGameMessages } from './services/game.service';
 import cors from 'cors';
 
 const app = express();

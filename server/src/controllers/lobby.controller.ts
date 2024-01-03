@@ -1,4 +1,4 @@
-import { BaseResponse } from './../models/common.model';
+import { BaseResponse } from '../models/common.model';
 import { Request, Response } from 'express';
 import lobbySrv from '../services/lobby.service';
 import { Room } from '../models/room.model';
