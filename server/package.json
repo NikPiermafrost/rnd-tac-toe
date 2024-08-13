@@ -1,0 +1,47 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "This project was bootstrapped with Fastify-CLI.",
+  "main": "app.ts",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "npm run build:ts && tsc -p test/tsconfig.json && c8 node --test -r ts-node/register \"test/**/*.ts\"",
+    "start": "npm run build:ts && fastify start -l info dist/app.js",
+    "build:ts": "tsc",
+    "watch:ts": "tsc -w",
+    "dev": "rm -rf dist && npm run build:ts && concurrently -k -p \"[{name}]\" -n \"TypeScript,App\" -c \"yellow.bold,cyan.bold\" \"npm:watch:ts\" \"npm:dev:start\"",
+    "dev:start": "fastify start --ignore-watch=.ts$ -w -l info -P dist/app.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@fastify/autoload": "^5.0.0",
+    "@fastify/redis": "^6.2.0",
+    "@fastify/sensible": "^5.0.0",
+    "@fastify/static": "^7.0.4",
+    "@socket.io/redis-adapter": "^8.3.0",
+    "@types/uuid": "^10.0.0",
+    "fastify": "^4.26.1",
+    "fastify-cli": "^6.3.0",
+    "fastify-plugin": "^4.0.0",
+    "fastify-socket.io": "^5.1.0",
+    "ioredis": "^5.4.1",
+    "socket.io": "^4.7.5",
+    "uuid": "^10.0.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.9.0",
+    "@types/node": "^20.4.4",
+    "c8": "^10.1.2",
+    "concurrently": "^8.2.2",
+    "eslint": "9.x",
+    "fastify-tsconfig": "^2.0.0",
+    "globals": "^15.9.0",
+    "ts-node": "^10.4.0",
+    "typescript": "^5.2.2",
+    "typescript-eslint": "^8.1.0"
+  }
+}

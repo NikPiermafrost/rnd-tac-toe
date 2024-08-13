@@ -44,7 +44,7 @@ namespace RndTacToe.Server.Hubs
         public async Task MoveSelected(string gameId, int position, string symbol)
         {
             await Clients.Group(gameId).SendAsync("Move", position, symbol);
-        }
+        }    
 
         public async Task Rematch(string gameId)
         {
