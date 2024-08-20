@@ -1,0 +1,11 @@
+services:
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+  rnd-tac-toe:
+    image: test-rnd
+    environment:
+      - REDIS_HOST=redis
+    ports:
+      - "3000:3000"

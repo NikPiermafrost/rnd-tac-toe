@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "ng build --configuration production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "lint": "ng lint"
@@ -21,9 +21,9 @@
     "@angular/router": "~13.0.0",
     "@angular/service-worker": "^13.0.0",
     "@fortawesome/fontawesome-free": "^5.15.4",
-    "@microsoft/signalr": "^6.0.0",
     "@tailwindcss/forms": "^0.4.0",
     "rxjs": "~7.4.0",
+    "socket.io-client": "^4.7.5",
     "tslib": "^2.3.0",
     "uuid": "^8.3.2",
     "zone.js": "~0.11.4"

@@ -8,7 +8,7 @@
     <h4>{{ opponentName.length ? ('You\'re against ' + opponentName) : 'Waiting for opponent to connect...' }}</h4>
   </div>
   <div class="flex justify-center mt-2">
-    <h4>{{ isYourTurn ? playerName : opponentName }} Turn!</h4>
+    <h4>{{ isYourTurn ? "Your" : opponentName }} turn!</h4>
   </div>
   <div class="flex justify-center mt-2" *ngIf="isConnected">
     <div class="grid-container">

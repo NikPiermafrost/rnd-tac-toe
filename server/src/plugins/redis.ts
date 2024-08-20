@@ -6,5 +6,6 @@ export default fp<FastifyRedisPluginOptions>(async (fastify, opts) => {
     host: process.env.REDIS_HOST,
     password: process.env.REDIS_PASSWORD,
     family: 4,
+    enableAutoPipelining: true,
   });
 });

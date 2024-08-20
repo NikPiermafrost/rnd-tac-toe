@@ -1,37 +1,36 @@
-FROM mcr.microsoft.com/dotnet/aspnet:6.0-alpine as base
+FROM node:20-alpine AS base
 
 WORKDIR /app
-EXPOSE 80
-EXPOSE 443
+EXPOSE 3000
+RUN npm i -g pnpm
 
-FROM node:16-alpine as build-angular
+FROM node:18-alpine AS build-angular
 
 RUN mkdir /angular-build
 WORKDIR /angular-build
 COPY ./web .
-RUN npm i --legacy-peer-deps
-RUN npm i -g @angular/cli@13
-RUN ng build --prod
+RUN npm i -g pnpm
+RUN pnpm i
+RUN pnpm build
 
-FROM mcr.microsoft.com/dotnet/sdk:6.0-alpine AS build
+FROM node:20-alpine AS build-server
 
 WORKDIR /src
-COPY ["RndTacToe/RndTacToe.Server/RndTacToe.Server.csproj", "server/RndTacToe.Server/"]
-COPY ["RndTacToe/RndTacToe.ConnectionManager/RndTacToe.ConnectionManager.csproj", "server/RndTacToe.ConnectionManager/"]
-COPY ["RndTacToe/RndTacToe.Lobby.Core/RndTacToe.Lobby.Core.csproj", "server/RndTacToe.Lobby.Core/"]
-COPY ["RndTacToe/RndTacToe.Lobby.DataAccess/RndTacToe.Lobby.DataAccess.csproj", "server/RndTacToe.Lobby.DataAccess/"]
-COPY ["RndTacToe/RndTacToe.Models/RndTacToe.Models.csproj", "server/RndTacToe.Models/"]
 
-COPY ./RndTacToe/ ./server
+COPY ./server/ ./server
 WORKDIR "/src/server"
-RUN dotnet build "RndTacToe.Server/RndTacToe.Server.csproj" -c Release -o /app/build
+RUN npm i -g pnpm
+RUN pnpm i
+RUN pnpm build:ts
+RUN mkdir -p ./dist/public
 
-FROM build AS publish
-RUN dotnet publish "RndTacToe.Server/RndTacToe.Server.csproj" -c Release -o /app/publish
-RUN mkdir /app/publish/wwwroot
-COPY --from=build-angular /angular-build/dist/web/* /app/publish/wwwroot/
-
-FROM base as final
+FROM base AS final
 WORKDIR /app
-COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "RndTacToe.Server.dll"]
+RUN addgroup -g 1001 -S nodejs
+RUN adduser -S application -u 1001
+COPY --from=build-server --chown=application:nodejs /src/server/dist .
+COPY --from=build-server --chown=application:nodejs /src/server/package.json ./package.json
+COPY --from=build-angular --chown=application:nodejs /angular-build/dist/web ./public
+RUN pnpm i --prod
+USER application
+CMD ["pnpm", "start:prod"]

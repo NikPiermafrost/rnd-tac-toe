@@ -1,13 +1,14 @@
 import { FastifyPluginAsync } from "fastify";
 import { RoomResponse, Room, NewRoomRequest, NewRoomResponse } from "../types/room";
-import { v4 } from "uuid";
 
 const newRoomSchema = {
   type: "object",
   properties: {
     playerName: { type: "string" },
+    gameId: { type: "string" }
   },
-  required: [ "playerName" ],
+  required: [ "playerName", "gameId" ],
+  additionalProperties: false,
 };
 
 const roomExistsSchema = {
@@ -16,10 +17,13 @@ const roomExistsSchema = {
     gameId: { type: "string" }
   },
   required: [ "gameId" ],
+  additionalProperties: false,
 };
 
 const lobby: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
   const { redis } = fastify;
+  await redis.del("lobby");
+
   fastify.get("/api/lobby", async function (request, reply) {
 
     const currentLobby = await redis.get("lobby");
@@ -30,7 +34,7 @@ const lobby: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
 
     const lobby: Room[] = JSON.parse(currentLobby);
 
-    const parsed = lobby.map(({ playerName: players, gameId }) => ({ playerName: players[ 0 ], gameId } as RoomResponse));
+    const parsed = lobby.map(({ playerName: players, gameId }) => ({ playerName: players, gameId } as RoomResponse));
 
     return reply.send(parsed);
   });
@@ -65,14 +69,12 @@ const lobby: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
       return reply.status(400).send({ error: "Lobby is full" });
     }
 
-    const uuid = v4();
-
-    lobby.push({ playerName: body.playerName, gameId: uuid });
+    lobby.push({ playerName: body.playerName, gameId: body.gameId });
 
     await redis.set("lobby", JSON.stringify(lobby));
 
     return reply.send({
-      gameId: uuid,
+      gameId: body.gameId,
     } as NewRoomResponse);
   });
 };

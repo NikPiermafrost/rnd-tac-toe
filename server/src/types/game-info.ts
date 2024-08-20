@@ -3,3 +3,9 @@ export interface PlayerJoined {
   playerName: string;
   randomChance: number;
 }
+
+export interface Move {
+  gameId: string;
+  position: number;
+  symbol: string;
+}

@@ -79,10 +79,10 @@ export class NewGameComponent implements OnInit, OnDestroy {
   }
 
   private nextResult(res: RoomResponseModel): void {
-    if (res.isCreated) {
+    if (!!res?.gameId) {
       this.initializeGame();
     } else {
-      window.alert(`Could not create new room, reason: ${res.reason}`);
+      window.alert(`Could not create new room`);
     }
   }
 

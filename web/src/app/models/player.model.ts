@@ -1,4 +1,10 @@
 export interface PlayerModel {
-  username: string;
+  playerName: string;
+  randomChance: number;
+}
+
+export interface PlayerJoined {
+  gameId: string;
+  playerName: string;
   randomChance: number;
 }

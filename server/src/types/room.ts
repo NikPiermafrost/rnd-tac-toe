@@ -10,6 +10,7 @@ export interface RoomResponse {
 
 export interface NewRoomRequest {
   playerName: string;
+  gameId: string;
 }
 
 export interface NewRoomResponse {

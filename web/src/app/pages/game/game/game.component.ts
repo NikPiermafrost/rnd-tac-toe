@@ -77,8 +77,8 @@ export class GameComponent implements OnInit, OnDestroy {
     });
 
     this.receiveOpponentSubscription = this.gameHubSrv.receivedOpponent$.subscribe((res: PlayerModel) => {
-      if (this.playerName !== res.username && (!this.opponentName && !this.opponentName.length)) {
-        this.opponentName = res.username;
+      if (this.playerName !== res.playerName && (!this.opponentName && !this.opponentName.length)) {
+        this.opponentName = res.playerName;
         this.gameHubSrv.sendInitialCall(this.gameId, this.playerName, this.currentRandomness);
       }
     });
@@ -158,27 +158,17 @@ export class GameComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.connectionStateSubscription?.unsubscribe();
+    this.hasExitedSubscription?.unsubscribe();
+    this.receiveOpponentSubscription?.unsubscribe();
+    this.moveSubscription?.unsubscribe();
+    this.receiveOpponentSubscription?.unsubscribe();
     try {
       this.gameHubSrv.removeFromGroup(this.gameId);
       this.gameHubSrv.disconnect();
     } catch {
       this.gameHubSrv.disconnect();
       this.router.navigate(['/']);
-    }
-    if (this.connectionStateSubscription) {
-      this.connectionStateSubscription.unsubscribe();
-    }
-    if (this.hasExitedSubscription) {
-      this.hasExitedSubscription.unsubscribe();
-    }
-    if (this.restartMatchSubscription) {
-      this.receiveOpponentSubscription.unsubscribe();
-    }
-    if (this.moveSubscription) {
-      this.moveSubscription.unsubscribe();
-    }
-    if (this.receiveOpponentSubscription) {
-      this.receiveOpponentSubscription.unsubscribe();
     }
   }
 

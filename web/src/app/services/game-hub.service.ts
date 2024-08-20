@@ -1,9 +1,9 @@
-import {Injectable} from '@angular/core';
-import {Subject} from 'rxjs';
-import {HttpTransportType, HubConnection, HubConnectionBuilder} from '@microsoft/signalr';
-import {environment} from '../../environments/environment';
-import {PlayerModel} from '../models/player.model';
-import {MoveModel} from '../models/move.model';
+import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs';
+import { environment } from '../../environments/environment';
+import { PlayerJoined, PlayerModel } from '../models/player.model';
+import { MoveModel } from '../models/move.model';
+import { io, Socket } from "socket.io-client";
 
 @Injectable({
   providedIn: 'root'
@@ -16,62 +16,61 @@ export class GameHubService {
   hasExited$ = new Subject<string>();
   connectionState$ = new Subject<boolean>();
 
-  connection : HubConnection;
+  socket: Socket;
 
   constructor() {
-    this.connection = new HubConnectionBuilder()
-      .withUrl(`${environment.backendUrl}/game-hub`, {
-        skipNegotiation: true,
-        transport: HttpTransportType.WebSockets
-      })
-      .build();
-  }
-
-  connect(): void {
-
-    this.connection.on('ReceiveOpponent', (username: string, randomChance: number) => {
-      this.receivedOpponent$.next({ randomChance, username });
+    this.socket = io('/', {
+      transports: [ 'websocket' ],
     });
 
-    this.connection.on('Move', (position: number, symbol: string) => {
-      this.move$.next({ position, symbol });
+    this.socket.on('ReceiveOpponent', (playerInfo: PlayerJoined) => {
+      console.log(playerInfo);
+      this.receivedOpponent$.next({ randomChance: playerInfo.randomChance, playerName: playerInfo.playerName });
     });
 
-    this.connection.on('RestartMatch', () => {
+    this.socket.on('Move', (move: MoveModel) => {
+      console.log(move);
+      this.move$.next({
+        gameId: move.gameId,
+        position: move.position,
+        symbol: move.symbol
+      });
+    });
+
+    this.socket.on('RestartMatch', () => {
       this.restartMatch$.next();
     });
 
-    this.connection.on('HasExited', (message: string) => {
+    this.socket.on('HasExited', (message: string) => {
       this.hasExited$.next(message);
     });
 
-    this.connection.start()
-      .then(() => {
-        this.connectionState$.next(true);
-      })
-      .catch((error) => {
-        console.log(error);
-        this.connectionState$.next(false);
-      });
+    this.socket.on('connect', () => {
+      this.connectionState$.next(this.socket.connected);
+    });
+  }
+
+  connect(): void {
+    this.socket.connect();
   }
 
   rematch(gameId: string): void {
-    this.connection.send('Rematch', gameId);
+    this.socket.emit('Rematch', gameId);
   }
 
-  sendInitialCall(gameId: string, currentPlayerName: string, currentRandomness: number): void {
-    this.connection.send('OnUserConnect', gameId, currentPlayerName, currentRandomness);
+  sendInitialCall(gameId: string, playerName: string, randomChance: number): void {
+    this.socket.emit('OnUserConnect', { gameId, playerName, randomChance });
   }
 
-  move(gameId: string, cellPosition: number, symbol: string): void {
-    this.connection.send('MoveSelected', gameId, cellPosition, symbol);
+  move(gameId: string, position: number, symbol: string): void {
+    this.socket.emit('MoveSelected', { gameId, position, symbol });
   }
 
   removeFromGroup(gameId: string): void {
-    this.connection.send('RemoveFromGroup', gameId);
+    this.socket.emit('RemoveFromGroup', gameId);
   }
 
   disconnect(): void {
-    this.connection.stop();
+    this.socket.disconnect();
   }
 }

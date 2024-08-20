@@ -22,4 +22,10 @@
 **/secrets.dev.yaml
 **/values.dev.yaml
 LICENSE
-README.md
+**/dist
+**/test
+**/eslint.config.mjs
+*/**/*.md
+.gitignore
+**/start.sh
+**/docker-compose.yml

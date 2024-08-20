@@ -4,6 +4,5 @@ export interface RoomModel {
 }
 
 export interface RoomResponseModel {
-  isCreated: boolean;
-  reason?: string;
+  gameId: string;
 }
