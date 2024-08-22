@@ -17,6 +17,9 @@ FROM node:20-alpine AS build-server
 
 WORKDIR /src
 
+RUN apk update
+RUN apk upgrade
+
 COPY ./server/ ./server
 WORKDIR "/src/server"
 RUN npm i -g pnpm
