@@ -1,24 +1,6 @@
 import { FastifyPluginAsync } from "fastify";
 import { RoomResponse, Room, NewRoomRequest, NewRoomResponse } from "../types/room";
-
-const newRoomSchema = {
-  type: "object",
-  properties: {
-    playerName: { type: "string" },
-    gameId: { type: "string" }
-  },
-  required: [ "playerName", "gameId" ],
-  additionalProperties: false,
-};
-
-const roomExistsSchema = {
-  type: "object",
-  properties: {
-    gameId: { type: "string" }
-  },
-  required: [ "gameId" ],
-  additionalProperties: false,
-};
+import { z } from "zod";
 
 const lobby: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
   const { redis } = fastify;
@@ -41,8 +23,19 @@ const lobby: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
 
   fastify.get("/api/lobby/:gameId/exists", {
     schema: {
-      params: roomExistsSchema
+      params: z.object({
+        gameId: z.string().uuid(),
+      }).required()
     },
+    validatorCompiler: ({ schema }) => {
+      return (data) => {
+        const result = (schema as any).safeParse(data);
+        if (result.success) {
+          return { value: result.data };
+        }
+        return { error: result.error };
+      };
+    }
   }, async function (request, reply) {
     const { gameId } = request.params as { gameId: string; };
 
@@ -57,8 +50,20 @@ const lobby: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
 
   fastify.post("/api/lobby", {
     schema: {
-      body: newRoomSchema
+      body: z.object({
+        playerName: z.string(),
+        gameId: z.string().uuid(),
+      }).required(),
     },
+    validatorCompiler: ({ schema }) => {
+      return (data) => {
+        const result = (schema as any).safeParse(data);
+        if (result.success) {
+          return { value: result.data };
+        }
+        return { error: result.error };
+      };
+    }
   }, async function (request, reply) {
     const body = request.body as NewRoomRequest;
 

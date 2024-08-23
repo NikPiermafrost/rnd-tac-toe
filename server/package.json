@@ -20,6 +20,7 @@
   "license": "ISC",
   "dependencies": {
     "@fastify/autoload": "^5.0.0",
+    "@fastify/helmet": "^11.1.1",
     "@fastify/redis": "^6.2.0",
     "@fastify/sensible": "^5.0.0",
     "@fastify/static": "^7.0.4",
@@ -30,8 +31,10 @@
     "fastify-plugin": "^4.0.0",
     "fastify-socket.io": "^5.1.0",
     "ioredis": "^5.4.1",
+    "joi": "^17.13.3",
     "socket.io": "^4.7.5",
-    "uuid": "^10.0.0"
+    "uuid": "^10.0.0",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.0",
