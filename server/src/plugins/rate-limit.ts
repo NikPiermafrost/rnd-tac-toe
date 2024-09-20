@@ -1,7 +1,7 @@
 import fp from "fastify-plugin";
 import fsRateLimit, { FastifyRateLimitOptions } from "@fastify/rate-limit";
 
-export default fp<FastifyRateLimitOptions>(async (fastify) => {
+export default fp<FastifyRateLimitOptions>(async (fastify, opts) => {
   fastify.register(fsRateLimit, {
     global: true,
     allowList: ["127.0.0.1"],
