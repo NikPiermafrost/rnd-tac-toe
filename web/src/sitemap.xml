@@ -2,32 +2,32 @@
 
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://rndtactoe.app/</loc>
-    <lastmod>2021-12-16</lastmod>
+    <loc>https://rnd-tac-toe.app/</loc>
+    <lastmod>2025-01-10</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://rndtactoe.app/#/home</loc>
-    <lastmod>2021-12-16</lastmod>
+    <loc>https://rnd-tac-toe.app/#/home</loc>
+    <lastmod>2025-01-10</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://rndtactoe.app/#/new-game</loc>
-    <lastmod>2021-12-16</lastmod>
+    <loc>https://rnd-tac-toe.app/#/new-game</loc>
+    <lastmod>2025-01-10</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://rndtactoe.app/#/join-game</loc>
-    <lastmod>2021-12-16</lastmod>
+    <loc>https://rnd-tac-toe.app/#/join-game</loc>
+    <lastmod>2025-01-10</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://rndtactoe.app/#/about</loc>
-    <lastmod>2021-12-16</lastmod>
+    <loc>https://rnd-tac-toe.app/#/about</loc>
+    <lastmod>2025-01-10</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
