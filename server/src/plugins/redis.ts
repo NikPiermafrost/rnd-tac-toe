@@ -8,5 +8,6 @@ export default fp<FastifyRedisPluginOptions>(async (fastify, opts) => {
     db: parseInt(process.env.REDIS_DB || "0", 10),
     family: 4,
     enableAutoPipelining: true,
+    closeClient: true
   });
 });
