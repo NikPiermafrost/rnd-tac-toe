@@ -114,8 +114,7 @@ export default fp<FastifySocketioOptions>(
         }
       });
     });
-  },
-  { fastify: ">=4.x.x", name: "fastify-socket.io" },
+  }
 );
 
 declare module "fastify" {

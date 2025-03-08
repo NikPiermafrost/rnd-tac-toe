@@ -1,6 +1,5 @@
 import { FastifyPluginAsync } from "fastify";
 import { RoomResponse, Room, NewRoomRequest, NewRoomResponse } from "../types/room";
-import { z } from "zod";
 
 const lobby: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
   const { redis } = fastify;
@@ -23,18 +22,16 @@ const lobby: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
 
   fastify.get("/api/lobby/:gameId/exists", {
     schema: {
-      params: z.object({
-        gameId: z.string().uuid(),
-      }).required()
-    },
-    validatorCompiler: ({ schema }) => {
-      return (data) => {
-        const result = (schema as any).safeParse(data);
-        if (result.success) {
-          return { value: result.data };
-        }
-        return { error: result.error };
-      };
+      params: {
+        type: "object",
+        properties: {
+          gameId: {
+            type: "string",
+            format: "uuid"
+          }
+        },
+        required: ["gameId"]
+      }
     }
   }, async function (request, reply) {
     const { gameId } = request.params as { gameId: string; };
@@ -50,19 +47,14 @@ const lobby: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
 
   fastify.post("/api/lobby", {
     schema: {
-      body: z.object({
-        playerName: z.string(),
-        gameId: z.string().uuid(),
-      }).required(),
-    },
-    validatorCompiler: ({ schema }) => {
-      return (data) => {
-        const result = (schema as any).safeParse(data);
-        if (result.success) {
-          return { value: result.data };
-        }
-        return { error: result.error };
-      };
+      body: {
+        type: "object",
+        properties: {
+          playerName: { type: "string", minLength: 4, maxLength: 16 }, 
+          gameId: { type: "string", format: "uuid" }
+        },
+        required: ["playerName", "gameId"]
+      }
     }
   }, async function (request, reply) {
     const body = request.body as NewRoomRequest;
