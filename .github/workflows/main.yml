@@ -1,0 +1,34 @@
+name: Build Docker Image
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    name: push docker image to docker hub
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v2
+      - name: login to docker hub
+        id: docker-hub
+        env:
+          username: ${{secrets.DOCKER_USER}}
+          password: ${{secrets.DOCKER_PAT}}
+        run: |
+          docker login ${{secrets.REGISTRY_URL}} -u $username -p $password 
+      - name: build the docker image
+        id: build-docker-image
+        run: |
+          ls -la 
+          docker build . -f Dockerfile -t ${{secrets.REGISTRY_URL}}/${{vars.IMAGE_NAME}}:latest
+      - name: push the docker image
+        id: push-docker-image
+        run: docker push ${{secrets.REGISTRY_URL}}/${{vars.IMAGE_NAME}}:latest
+      - name: restart kubectl deployment
+        id: restart-kubectl-deployment
+        run: |
+          k3s kubectl rollout restart deployment/${{vars.K8S_DEPLOYMENT_NAME}} -n ${{vars.K8S_NAMESPACE}}
+      - name: cleanup build cache
+        id: cleanup-build-cache
+        run: |
+          docker builder prune -f
