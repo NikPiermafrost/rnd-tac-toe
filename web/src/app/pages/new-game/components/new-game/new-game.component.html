@@ -4,9 +4,11 @@
     <input type="text"
       class="w-full rounded bg-darkBlue text-yellow px-3 py-2 focus:outline-none focus:border-yellow focus:border-2"
       formControlName="username" id="username">
-    <small *ngIf="newGameForm.get('username')?.invalid">
-      Username lenght must be bewteen 4 and 16 characters
-    </small>
+    @if (newGameForm.get('username')?.invalid) {
+      <small>
+        Username lenght must be bewteen 4 and 16 characters
+      </small>
+    }
   </div>
   <div class="form-check p-4">
     <input type="checkbox" formControlName="public" id="public" />
@@ -16,10 +18,12 @@
   </div>
   <div class="p-4">
     <span class="text-2xl block">New Game</span>
-    <button type="button" class="button-custom w-full" (click)="copyGameCodeToClipBoard()"
-      *ngIf="randomGameCode.length">
-      Copy room code
-    </button>
+    @if (randomGameCode.length) {
+      <button type="button" class="button-custom w-full" (click)="copyGameCodeToClipBoard()"
+        >
+        Copy room code
+      </button>
+    }
   </div>
   <div class="flex p-4" style="justify-content: end;">
     <div>

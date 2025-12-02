@@ -2,9 +2,11 @@
   <div class="p-4">
     <label for="username" class="text-2xl block">Username</label>
     <input type="text" class="w-full rounded bg-darkBlue text-yellow px-3 py-2 focus:outline-none focus:border-yellow focus:border-2" formControlName="username" id="username">
-    <small *ngIf="joinGameForm.get('username')?.invalid">
-      Username lenght must be bewteen 4 and 16 characters
-    </small>
+    @if (joinGameForm.get('username')?.invalid) {
+      <small>
+        Username lenght must be bewteen 4 and 16 characters
+      </small>
+    }
   </div>
   <div class="p-4">
     <label for="game-code" class="text-2xl block">Insert the game code to join!</label>
@@ -25,28 +27,36 @@
         <i class="fas fa-sync-alt"></i>
       </span>
     </div>
-    <ng-container *ngIf="gameDoesNotExists">
+    @if (gameDoesNotExists) {
       <div class="p-4">
         <p>Game does no longer exists!</p>
       </div>
-    </ng-container>
-    <ng-container *ngIf="lobby.length === 0">
+    }
+    @if (lobby.length === 0) {
       <div class="p-4">
         <p>No public games available :(</p>
       </div>
-    </ng-container>
-    <ul *ngIf="lobby.length" class="flex flex-col pl-0">
-      <li *ngFor="let room of lobby" class="rounded relative block py-2 px-4 border border-yellow">
-        <div class="flex justify-between">
-          <span>{{ room.playerName }}</span>
-          <span class="cursor-pointer" (click)="onJoinPublic(room.gameId)" *ngIf="!joinGameForm.get('username')?.invalid">
-            <i class="fas fa-chevron-circle-right"></i>
-          </span>
-          <span *ngIf="joinGameForm.get('username')?.invalid">
-            <i class="fas fa-ban"></i>
-          </span>
-        </div>
-      </li>
-    </ul>
+    }
+    @if (lobby.length) {
+      <ul class="flex flex-col pl-0">
+        @for (room of lobby; track room) {
+          <li class="rounded relative block py-2 px-4 border border-yellow">
+            <div class="flex justify-between">
+              <span>{{ room.playerName }}</span>
+              @if (!joinGameForm.get('username')?.invalid) {
+                <span class="cursor-pointer" (click)="onJoinPublic(room.gameId)">
+                  <i class="fas fa-chevron-circle-right"></i>
+                </span>
+              }
+              @if (joinGameForm.get('username')?.invalid) {
+                <span>
+                  <i class="fas fa-ban"></i>
+                </span>
+              }
+            </div>
+          </li>
+        }
+      </ul>
+    }
   </div>
 </form>

@@ -5,7 +5,9 @@
       <header class="flex justify-center my-4">
         <div class="p-4 text-center" (click)="goToHome()">
           <h1 class="text-5xl mb-1">Rnd Tac Toe</h1>
-          <h2 class="text-3xl main-subtitle-text" *ngIf="motd">{{ motd }}</h2>
+          @if (motd) {
+            <h2 class="text-3xl main-subtitle-text">{{ motd }}</h2>
+          }
         </div>
       </header>
       <section id="body">

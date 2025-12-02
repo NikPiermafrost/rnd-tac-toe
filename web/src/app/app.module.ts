@@ -7,32 +7,26 @@ import { CommonUtilsModule } from './common-utils/common-utils.module';
 import { GameHelperService } from './services/game-helper.service';
 import { IndexComponent } from './pages/index/index.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 
-@NgModule({
-  declarations: [
-    AppComponent,
-    IndexComponent
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    CommonUtilsModule,
-    FormsModule,
-    ReactiveFormsModule,
-    HttpClientModule,
-    ServiceWorkerModule.register('ngsw-worker.js', {
-      enabled: environment.production,
-      // Register the ServiceWorker as soon as the app is stable
-      // or after 30 seconds (whichever comes first).
-      registrationStrategy: 'registerWhenStable:30000'
-    })
-  ],
-  providers: [
-    GameHelperService
-  ],
-  bootstrap: [AppComponent]
-})
+@NgModule({ declarations: [
+        AppComponent,
+        IndexComponent
+    ],
+    bootstrap: [AppComponent], imports: [BrowserModule,
+        AppRoutingModule,
+        CommonUtilsModule,
+        FormsModule,
+        ReactiveFormsModule,
+        ServiceWorkerModule.register('ngsw-worker.js', {
+            enabled: environment.production,
+            // Register the ServiceWorker as soon as the app is stable
+            // or after 30 seconds (whichever comes first).
+            registrationStrategy: 'registerWhenStable:30000'
+        })], providers: [
+        GameHelperService,
+        provideHttpClient(withInterceptorsFromDi())
+    ] })
 export class AppModule { }
