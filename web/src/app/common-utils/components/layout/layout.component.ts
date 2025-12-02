@@ -1,11 +1,13 @@
 import { Component, OnInit, inject } from '@angular/core';
 import {Router} from '@angular/router';
+import { NavbarComponent } from '../navbar/navbar.component';
+import { FooterComponent } from '../footer/footer.component';
 
 @Component({
     selector: 'app-layout',
     templateUrl: './layout.component.html',
     styleUrls: ['./layout.component.scss'],
-    standalone: false
+    imports: [NavbarComponent, FooterComponent]
 })
 export class LayoutComponent implements OnInit {
   private router = inject(Router);

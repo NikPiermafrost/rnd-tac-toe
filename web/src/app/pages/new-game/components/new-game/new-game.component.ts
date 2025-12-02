@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { v4 as uuid } from 'uuid';
 import { RoomResponseModel } from '../../../../models/room.model';
 import { Subscription } from 'rxjs';
@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
     selector: 'app-new-game',
     templateUrl: './new-game.component.html',
     styleUrls: ['./new-game.component.scss'],
-    standalone: false
+    imports: [FormsModule, ReactiveFormsModule]
 })
 export class NewGameComponent implements OnInit, OnDestroy {
   private formBuilder = inject(UntypedFormBuilder);

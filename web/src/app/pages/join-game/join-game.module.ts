@@ -7,12 +7,12 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
-  declarations: [JoinGameComponent],
-  imports: [
-    CommonModule,
-    JoinGameRoutingModule,
-    FormsModule,
-    ReactiveFormsModule
-  ]
+    imports: [
+        CommonModule,
+        JoinGameRoutingModule,
+        FormsModule,
+        ReactiveFormsModule,
+        JoinGameComponent
+    ]
 })
 export class JoinGameModule { }

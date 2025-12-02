@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { GameHelperService } from '../../../../services/game-helper.service';
 import { LobbyService } from '../../../../services/lobby.service';
 import { Observable, Subscription } from 'rxjs';
@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
     selector: 'app-join-game',
     templateUrl: './join-game.component.html',
     styleUrls: ['./join-game.component.scss'],
-    standalone: false
+    imports: [FormsModule, ReactiveFormsModule]
 })
 export class JoinGameComponent implements OnDestroy {
   private formBuilder = inject(UntypedFormBuilder);

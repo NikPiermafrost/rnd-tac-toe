@@ -9,20 +9,18 @@ import { UiService } from '../services/ui.service';
 
 
 @NgModule({
-  declarations: [
-    LayoutComponent,
-    FooterComponent,
-    NavbarComponent
-  ],
-  imports: [
-    CommonModule,
-    RouterModule
-  ],
-  exports: [
-    LayoutComponent
-  ],
-  providers: [
-    UiService
-  ]
+    imports: [
+        CommonModule,
+        RouterModule,
+        LayoutComponent,
+        FooterComponent,
+        NavbarComponent
+    ],
+    exports: [
+        LayoutComponent
+    ],
+    providers: [
+        UiService
+    ]
 })
 export class CommonUtilsModule { }

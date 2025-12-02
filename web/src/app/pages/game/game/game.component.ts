@@ -10,8 +10,7 @@ import {PlayerModel} from '../../../models/player.model';
 @Component({
     selector: 'app-game',
     templateUrl: './game.component.html',
-    styleUrls: ['./game.component.scss'],
-    standalone: false
+    styleUrls: ['./game.component.scss']
 })
 export class GameComponent implements OnInit, OnDestroy {
   private gameHelperSrv = inject(GameHelperService);

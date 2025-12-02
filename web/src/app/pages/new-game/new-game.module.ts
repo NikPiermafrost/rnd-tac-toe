@@ -7,14 +7,12 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
-  declarations: [
-    NewGameComponent
-  ],
-  imports: [
-    CommonModule,
-    NewGameRoutingModule,
-    FormsModule,
-    ReactiveFormsModule
-  ]
+    imports: [
+        CommonModule,
+        NewGameRoutingModule,
+        FormsModule,
+        ReactiveFormsModule,
+        NewGameComponent
+    ]
 })
 export class NewGameModule { }

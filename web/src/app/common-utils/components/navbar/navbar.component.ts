@@ -2,12 +2,14 @@ import { Component, OnDestroy, inject } from '@angular/core';
 import { UiService } from '../../../services/ui.service';
 import { Subscription } from 'rxjs';
 import { UiState } from '../../../models/ui.model';
+import { NgClass } from '@angular/common';
+import { RouterLinkActive, RouterLink } from '@angular/router';
 
 @Component({
     selector: 'app-navbar',
     templateUrl: './navbar.component.html',
     styleUrls: ['./navbar.component.scss'],
-    standalone: false
+    imports: [NgClass, RouterLinkActive, RouterLink]
 })
 export class NavbarComponent implements OnDestroy {
   private uiSrv = inject(UiService);
