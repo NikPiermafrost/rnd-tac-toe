@@ -4,7 +4,7 @@ WORKDIR /app
 EXPOSE 3000
 RUN npm i -g pnpm
 
-FROM node:14-alpine AS build-angular
+FROM node:24-alpine AS build-angular
 
 RUN mkdir /angular-build
 WORKDIR /angular-build
