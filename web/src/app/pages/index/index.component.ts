@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import {UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators} from '@angular/forms';
 import { v4 as uuid } from 'uuid';
 import { GameHelperService } from '../../services/game-helper.service';
@@ -14,16 +14,18 @@ import { RoomResponseModel } from '../../models/room.model';
     standalone: false
 })
 export class IndexComponent implements OnInit, OnDestroy {
+  private formBuilder = inject(UntypedFormBuilder);
+  private gameHelperSrv = inject(GameHelperService);
+  private router = inject(Router);
+  private lobbySrv = inject(LobbyService);
+
 
   startForm!: UntypedFormGroup;
   isJoin: boolean = false;
   randomGameCode: string = '';
   newGameSubscription?: Subscription;
 
-  constructor(private formBuilder: UntypedFormBuilder,
-              private gameHelperSrv: GameHelperService,
-              private router: Router,
-              private lobbySrv: LobbyService) { }
+  constructor() { }
 
   ngOnInit(): void {
     this.initializeGameString();

@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { v4 as uuid } from 'uuid';
 import { RoomResponseModel } from '../../../../models/room.model';
@@ -14,16 +14,18 @@ import { Router } from '@angular/router';
     standalone: false
 })
 export class NewGameComponent implements OnInit, OnDestroy {
+  private formBuilder = inject(UntypedFormBuilder);
+  private lobbySrv = inject(LobbyService);
+  private gameHelperSrv = inject(GameHelperService);
+  private router = inject(Router);
+
 
   newGameForm!: UntypedFormGroup;
   randomGameCode: string = '';
   newGameSubscription?: Subscription;
   formSubscription?: Subscription;
 
-  constructor(private formBuilder: UntypedFormBuilder,
-              private lobbySrv: LobbyService,
-              private gameHelperSrv: GameHelperService,
-              private router: Router) {
+  constructor() {
     this.initializeForm();
     this.formSubscription = this.newGameForm.valueChanges.subscribe((formValues) => {
       const { username } = formValues;

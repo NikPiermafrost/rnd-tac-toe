@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import {GameHelperService} from '../../../services/game-helper.service';
 import {GameHubService} from '../../../services/game-hub.service';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -14,6 +14,11 @@ import {PlayerModel} from '../../../models/player.model';
     standalone: false
 })
 export class GameComponent implements OnInit, OnDestroy {
+  private gameHelperSrv = inject(GameHelperService);
+  private gameHubSrv = inject(GameHubService);
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
+
 
   gameId: string = '';
   opponentName: string = '';
@@ -34,10 +39,7 @@ export class GameComponent implements OnInit, OnDestroy {
 
   gameGrid: TicTacToeCellModel[] = [];
 
-  constructor(private gameHelperSrv: GameHelperService,
-              private gameHubSrv: GameHubService,
-              private route: ActivatedRoute,
-              private router: Router) {
+  constructor() {
     this.initializeGrid();
   }
 

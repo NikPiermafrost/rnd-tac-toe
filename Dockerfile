@@ -33,7 +33,7 @@ RUN addgroup -g 1001 -S nodejs
 RUN adduser -S application -u 1001
 COPY --from=build-server --chown=application:nodejs /src/server/dist .
 COPY --from=build-server --chown=application:nodejs /src/server/package.json ./package.json
-COPY --from=build-angular --chown=application:nodejs /angular-build/dist/web ./public
+COPY --from=build-angular --chown=application:nodejs /angular-build/dist/web/browser/ ./public
 RUN pnpm i --prod
 USER application
 CMD ["pnpm", "start:prod"]

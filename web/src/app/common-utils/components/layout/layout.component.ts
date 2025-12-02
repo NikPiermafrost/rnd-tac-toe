@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import {Router} from '@angular/router';
 
 @Component({
@@ -8,6 +8,8 @@ import {Router} from '@angular/router';
     standalone: false
 })
 export class LayoutComponent implements OnInit {
+  private router = inject(Router);
+
 
   motd: string = '';
 
@@ -21,8 +23,6 @@ export class LayoutComponent implements OnInit {
     '>Implying it does what you asked',
     'Oh no',
   ]
-
-  constructor(private router: Router) { }
 
   ngOnInit(): void {
     this.motd = this.messages[this.getMotd()];

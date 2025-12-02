@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, inject } from '@angular/core';
 import { UiService } from '../../../services/ui.service';
 import { Subscription } from 'rxjs';
 import { UiState } from '../../../models/ui.model';
@@ -10,12 +10,14 @@ import { UiState } from '../../../models/ui.model';
     standalone: false
 })
 export class NavbarComponent implements OnDestroy {
+  private uiSrv = inject(UiService);
+
 
   navbarStatus: UiState = UiState.full;
 
   collapsedStatusSubscription?: Subscription;
 
-  constructor(private uiSrv: UiService) {
+  constructor() {
     this.collapsedStatusSubscription = this.uiSrv.menuCollapsedSubject$.subscribe({
       next: (state) => {
         this.navbarStatus = state;

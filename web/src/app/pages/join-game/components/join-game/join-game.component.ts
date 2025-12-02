@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { GameHelperService } from '../../../../services/game-helper.service';
 import { LobbyService } from '../../../../services/lobby.service';
@@ -13,6 +13,11 @@ import { Router } from '@angular/router';
     standalone: false
 })
 export class JoinGameComponent implements OnDestroy {
+  private formBuilder = inject(UntypedFormBuilder);
+  private gameHelperSrv = inject(GameHelperService);
+  private lobbySrv = inject(LobbyService);
+  private router = inject(Router);
+
 
   joinGameForm!: UntypedFormGroup;
   lobby: RoomModel[] = [];
@@ -22,10 +27,7 @@ export class JoinGameComponent implements OnDestroy {
   gameExistsSubscription?: Subscription;
   gameDoesNotExists = false;
 
-  constructor(private formBuilder: UntypedFormBuilder,
-              private gameHelperSrv: GameHelperService,
-              private lobbySrv: LobbyService,
-              private router: Router) {
+  constructor() {
     this.loadLobby();
     this.initializeForm();
     this.formValuesSubscription = this.joinGameForm.valueChanges.subscribe((formValues) => {

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { RoomModel, RoomResponseModel } from '../models/room.model';
@@ -7,10 +7,10 @@ import { RoomModel, RoomResponseModel } from '../models/room.model';
   providedIn: 'root'
 })
 export class LobbyService {
+  private http = inject(HttpClient);
+
 
   private readonly baseRoute: string = '/api/lobby'
-
-  constructor(private http: HttpClient) { }
 
   getLobby(): Observable<RoomModel[]> {
     return this.http.get<RoomModel[]>(`${this.baseRoute}`);
